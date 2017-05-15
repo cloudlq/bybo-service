@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mxg.bybo.dao.ExpertDao">
+
+
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		id,name,specialty,title,region_id,language,photo,honor,adept,content,department,gray_phone,duty
+	    ]]>
+	</sql>
+
+	<!--保存 -->
+	<insert id="insertExpert">
+	    <![CDATA[
+	        INSERT INTO expert ( 
+	        	id,name,specialty,title,region_id,language,photo,honor,adept,content,department,gray_phone,duty
+	        ) VALUES (
+	        	#{id} ,
+	        	#{name} ,
+	        	#{specialty} ,
+	        	#{title} ,
+	        	#{regionId} ,
+	        	#{language} ,
+	        	#{photo} ,
+	        	#{honor} ,
+	        	#{adept} ,
+	        	#{content} ,
+	        	#{department} ,
+	        	#{grayPhone} ,
+	        	#{duty} 
+	        )
+	    ]]>
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="insertExpertBatch">
+	    <![CDATA[
+	        INSERT INTO expert (
+	        	id,name,specialty,title,region_id,language,photo,honor,adept,content,department,gray_phone,duty
+	        ) VALUES 
+	         ]]>
+		<foreach item="item" collection="list" separator=",">
+			(
+						#{item.id} ,
+						#{item.name} ,
+						#{item.specialty} ,
+						#{item.title} ,
+						#{item.regionId} ,
+						#{item.language} ,
+						#{item.photo} ,
+						#{item.honor} ,
+						#{item.adept} ,
+						#{item.content} ,
+						#{item.department} ,
+						#{item.grayPhone} ,
+						#{item.duty} 
+			)
+		</foreach>
+
+	</insert>
+
+	<!-- update 条件组合 -->
+	<sql id="update_sql">
+		<set>
+			<if
+				test="name != null and name != ''">
+				name = #{name}
+				,
+			</if>
+			<if
+				test="specialty != null and specialty != ''">
+				specialty = #{specialty}
+				,
+			</if>
+			<if
+				test="title != null and title != ''">
+				title = #{title}
+				,
+			</if>
+			<if test="regionId != null">
+				region_id = #{regionId} ,
+			</if>
+			<if
+				test="language != null and language != ''">
+				language = #{language}
+				,
+			</if>
+			<if
+				test="photo != null and photo != ''">
+				photo = #{photo}
+				,
+			</if>
+			<if
+				test="honor != null and honor != ''">
+				honor = #{honor}
+				,
+			</if>
+			<if
+				test="adept != null and adept != ''">
+				adept = #{adept}
+				,
+			</if>
+			<if
+				test="content != null and content != ''">
+				content = #{content}
+				,
+			</if>
+			<if
+				test="department != null and department != ''">
+				department = #{department}
+				,
+			</if>
+			<if
+				test="grayPhone != null and grayPhone != ''">
+				gray_phone = #{grayPhone}
+				,
+			</if>
+			<if
+				test="duty != null and duty != ''">
+				duty = #{duty}
+				
+			</if>
+		</set>
+	</sql>
+
+    <!-- 模糊查询这样： 字段名 LIKE CONCAT('%',CONCAT(#{model.userName},'%')) -->
+	<!-- where 条件组合 -->
+	<sql id="where_sql">
+		<where>
+			<if
+				test="expert.name != null and expert.name != ''">
+				name = #{expert.name}				 
+			</if>
+			<if
+				test="expert.specialty != null and expert.specialty != ''">
+				 and specialty = #{expert.specialty}				 
+			</if>
+			<if
+				test="expert.title != null and expert.title != ''">
+				 and title = #{expert.title}				 
+			</if>
+			<if test="expert.regionId != null">
+				 and  region_id = #{expert.regionId} 
+			</if>
+			<if
+				test="expert.language != null and expert.language != ''">
+				 and language = #{expert.language}				 
+			</if>
+			<if
+				test="expert.photo != null and expert.photo != ''">
+				 and photo = #{expert.photo}				 
+			</if>
+			<if
+				test="expert.honor != null and expert.honor != ''">
+				 and honor = #{expert.honor}				 
+			</if>
+			<if
+				test="expert.adept != null and expert.adept != ''">
+				 and adept = #{expert.adept}				 
+			</if>
+			<if
+				test="expert.content != null and expert.content != ''">
+				 and content = #{expert.content}				 
+			</if>
+			<if
+				test="expert.department != null and expert.department != ''">
+				 and department = #{expert.department}				 
+			</if>
+			<if
+				test="expert.grayPhone != null and expert.grayPhone != ''">
+				 and gray_phone = #{expert.grayPhone}				 
+			</if>
+			<if
+				test="expert.duty != null and expert.duty != ''">
+				 and duty = #{expert.duty}				 
+			</if>
+		</where>
+	</sql>
+
+	<!-- 修改 -->
+	<update id="updateExpertById">
+		UPDATE expert
+		<include refid="update_sql" />
+		WHERE
+		id =
+		#{id} 	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteExpertById">
+		DELETE FROM expert
+		WHERE
+		id = #{id} 	</delete>
+
+
+
+	<!-- selsect -->
+	<select id="getExpertById" resultType="com.mxg.bybo.model.Expert">
+		SELECT
+		<include refid="columns" />
+		FROM expert
+		WHERE
+		id = #{id} 	</select>
+
+	<!-- selsect -->
+	<select id="getExperts" resultType="com.mxg.bybo.model.Expert">
+		SELECT
+		<include refid="columns" />
+		FROM expert
+		<include refid="where_sql" />
+		order by specialty = 0,specialty
+	</select>
+		
+			<!-- selsect -->
+	<select id="getExpertsForPage" resultType="com.mxg.bybo.model.Expert">
+		SELECT
+		<include refid="columns" />
+		FROM expert
+		where 1=1
+		<foreach collection="conditions" item="condition">
+			${condition.exp}
+		</foreach>
+		order by specialty = 0,specialty
+	</select>
+
+
+</mapper>

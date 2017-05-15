@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans   
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd   
+	http://www.springframework.org/schema/context   
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd   
+	http://www.springframework.org/schema/tx   
+	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd   
+	http://www.springframework.org/schema/mvc   
+	http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd ">
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean
+				class="basic.common.core.converter.SimpleHttpMessageConverter">
+				<property name="objectMapper">
+					<bean class="com.fasterxml.jackson.databind.ObjectMapper">
+						<property name="dateFormat">
+							<bean class="java.text.SimpleDateFormat">
+								<constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />
+							</bean>
+						</property>
+					</bean>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	
+
+	<context:component-scan base-package="basic.common.**,basic.authority.**,com.mxg.bybo.rest" />
+	<!-- <bean class="basic.common.core.swagger.SpringSwaggerConfig" /> -->	<!-- 配置国际化资源文件路径 -->
+	<bean class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<!-- 定义消息资源文件的相对路径 -->
+			<value>messages/message</value>
+		</property>
+	</bean>
+
+	<bean id="contentManager"
+		class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="favorPathExtension" value="true" />
+		<property name="ignoreAcceptHeader" value="true" />
+		<property name="defaultContentType" value="application/json" />
+		<property name="useJaf" value="false" />
+		<property name="mediaTypes">
+			<map>
+				<entry key="json" value="application/json" />
+				<entry key="sjson" value="application/sjson" />
+				<entry key="html" value="text/html" />
+				<entry key="xml" value="application/xml" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!--单个文件大小限制为5M -->
+		<property name="maxUploadSize" value="5242880" />
+		<property name="resolveLazily" value="true" />
+		<!--缓存大小(字节点位),默认为1M; -->
+		<!--property name="maxInMemorySize" value="4096"/ -->
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+	<bean
+		class="springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration"
+		id="swagger2Config">
+	</bean>
+	<mvc:resources location="classpath:/META-INF/resources/"
+		mapping="swagger-ui.html"></mvc:resources>
+	<mvc:resources location="classpath:/META-INF/resources/webjars/"
+		mapping="/webjars/**"></mvc:resources>
+	<mvc:default-servlet-handler />
+
+</beans>

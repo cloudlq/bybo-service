@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mxg.bybo.dao.CategoryDao">
+
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		id,name,department_id,language,department,is_show,summary
+	    ]]>
+	</sql>
+	
+
+	<!--保存 -->
+	<insert id="insertCategory">
+	    <![CDATA[
+	        INSERT INTO category ( 
+	        	id,name,department_id,language,department,is_show,summary
+	        ) VALUES (
+	        	#{id} ,
+	        	#{name} ,
+	        	#{departmentId} ,
+	        	#{language} ,
+	        	#{department} ,
+	        	#{isShow} ,
+	        	#{summary} 
+	        )
+	    ]]>
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="insertCategoryBatch">
+	    <![CDATA[
+	        INSERT INTO category (
+	        	id,name,department_id,language,department,is_show,summary
+	        ) VALUES 
+	         ]]>
+		<foreach item="item" collection="list" separator=",">
+			(
+						#{item.id} ,
+						#{item.name} ,
+						#{item.departmentId} ,
+						#{item.language} ,
+						#{item.department} ,
+						#{item.isShow} ,
+						#{item.summary} 
+			)
+		</foreach>
+
+	</insert>
+
+	<!-- update 条件组合 -->
+	<sql id="update_sql">
+		<set>
+			<if
+				test="name != null and name != ''">
+				name = #{name}
+				,
+			</if>
+			<if test="departmentId != null">
+				department_id = #{departmentId} ,
+			</if>
+			<if
+				test="language != null and language != ''">
+				language = #{language}
+				,
+			</if>
+			<if
+				test="department != null and department != ''">
+				department = #{department}
+				,
+			</if>
+			<if test="isShow != null">
+				is_show = #{isShow} ,
+			</if>
+			<if
+				test="summary != null and summary != ''">
+				summary = #{summary}
+				
+			</if>
+		</set>
+	</sql>
+
+    <!-- 模糊查询这样： 字段名 LIKE CONCAT('%',CONCAT(#{model.userName},'%')) -->
+	<!-- where 条件组合 -->
+	<sql id="where_sql">
+		<where>
+			<if
+				test="category.name != null and category.name != ''">
+				name = #{category.name}				 
+			</if>
+			<if test="category.departmentId != null">
+				 and  department_id = #{category.departmentId} 
+			</if>
+			<if
+				test="category.language != null and category.language != ''">
+				 and language = #{category.language}				 
+			</if>
+			<if
+				test="category.department != null and category.department != ''">
+				 and department = #{category.department}				 
+			</if>
+			<if test="category.isShow != null">
+				 and  is_show = #{category.isShow} 
+			</if>
+			<if
+				test="category.summary != null and category.summary != ''">
+				 and summary = #{category.summary}				 
+			</if>
+		</where>
+	</sql>
+	<!-- 修改 -->
+	<update id="updateCategoryById">
+		UPDATE category
+		<include refid="update_sql" />
+		WHERE
+		id =
+		#{id} 	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteCategoryById">
+		DELETE FROM category
+		WHERE
+		id = #{id} 	</delete>
+
+
+
+	<!-- selsect -->
+	<select id="getCategoryById" resultType="com.mxg.bybo.model.Category">
+		SELECT
+		a.id,a.name,a.department_id,a.language,a.department,a.is_show,a.summary,b.icon as icon,b.icon2 as icon2
+		FROM category a,department b
+		where 
+			a.id =#{id}
+		and
+			a.department_id = b.id
+		</select>
+
+	<!-- selsect -->
+	<select id="getCategorys" resultType="com.mxg.bybo.model.Category">
+		SELECT
+		<include refid="columns" />
+		FROM category
+		<include refid="where_sql" />
+	</select>
+		
+	<select id="getShowCategorys" resultType="com.mxg.bybo.model.Category">
+		SELECT
+		a.id,a.name,a.department_id,a.language,a.department,a.is_show,a.summary,b.icon as icon,b.icon2 as icon2
+		FROM category a,department b
+		where 
+			a.is_show = '1'
+		and
+			a.department_id = b.id
+	
+	</select>	
+		
+		
+		
+			<!-- selsect -->
+	<select id="getCategorysForPage" resultType="com.mxg.bybo.model.Category">
+		SELECT
+		<include refid="columns" />
+		FROM category
+		<include refid="where_sql" />
+	</select>
+
+
+</mapper>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mxg.bybo.dao.DepartmentDao">
+
+		<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		id,name,summary,service,technical,picture,language,icon,icon2
+	    ]]>
+	</sql>
+
+	<!--保存 -->
+	<insert id="insertDepartment">
+	    <![CDATA[
+	        INSERT INTO department ( 
+	        	id,name,summary,service,technical,picture,language,icon,icon2
+	        ) VALUES (
+	        	#{id} ,
+	        	#{name} ,
+	        	#{summary} ,
+	        	#{service} ,
+	        	#{technical} ,
+	        	#{picture} ,
+	        	#{language} ,
+	        	#{icon} ,
+	        	#{icon2} 
+	        )
+	    ]]>
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="insertDepartmentBatch">
+	    <![CDATA[
+	        INSERT INTO department (
+	        	id,name,summary,service,technical,picture,language,icon,icon2
+	        ) VALUES 
+	         ]]>
+		<foreach item="item" collection="list" separator=",">
+			(
+						#{item.id} ,
+						#{item.name} ,
+						#{item.summary} ,
+						#{item.service} ,
+						#{item.technical} ,
+						#{item.picture} ,
+						#{item.language} ,
+						#{item.icon} ,
+						#{item.icon2} 
+			)
+		</foreach>
+
+	</insert>
+
+	<!-- update 条件组合 -->
+	<sql id="update_sql">
+		<set>
+			<if
+				test="name != null and name != ''">
+				name = #{name}
+				,
+			</if>
+			<if
+				test="summary != null and summary != ''">
+				summary = #{summary}
+				,
+			</if>
+			<if
+				test="service != null and service != ''">
+				service = #{service}
+				,
+			</if>
+			<if
+				test="technical != null and technical != ''">
+				technical = #{technical}
+				,
+			</if>
+			<if
+				test="picture != null and picture != ''">
+				picture = #{picture}
+				,
+			</if>
+			<if
+				test="language != null and language != ''">
+				language = #{language}
+				,
+			</if>
+			<if
+				test="icon != null and icon != ''">
+				icon = #{icon}
+				,
+			</if>
+			<if
+				test="icon2 != null and icon2 != ''">
+				icon2 = #{icon2}
+				
+			</if>
+		</set>
+	</sql>
+
+    <!-- 模糊查询这样： 字段名 LIKE CONCAT('%',CONCAT(#{model.userName},'%')) -->
+	<!-- where 条件组合 -->
+	<sql id="where_sql">
+		<where>
+			<if
+				test="department.name != null and department.name != ''">
+				name = #{department.name}				 
+			</if>
+			<if
+				test="department.summary != null and department.summary != ''">
+				 and summary = #{department.summary}				 
+			</if>
+			<if
+				test="department.service != null and department.service != ''">
+				 and service = #{department.service}				 
+			</if>
+			<if
+				test="department.technical != null and department.technical != ''">
+				 and technical = #{department.technical}				 
+			</if>
+			<if
+				test="department.picture != null and department.picture != ''">
+				 and picture = #{department.picture}				 
+			</if>
+			<if
+				test="department.language != null and department.language != ''">
+				 and language = #{department.language}				 
+			</if>
+			<if
+				test="department.icon != null and department.icon != ''">
+				 and icon = #{department.icon}				 
+			</if>
+			<if
+				test="department.icon2 != null and department.icon2 != ''">
+				 and icon2 = #{department.icon2}				 
+			</if>
+		</where>
+	</sql>
+	<!-- 修改 -->
+	<update id="updateDepartmentById">
+		UPDATE department
+		<include refid="update_sql" />
+		WHERE
+		id =
+		#{id} 	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteDepartmentById">
+		DELETE FROM department
+		WHERE
+		id = #{id} 	</delete>
+
+
+
+	<!-- selsect -->
+	<select id="getDepartmentById" resultType="com.mxg.bybo.model.Department">
+		SELECT
+		<include refid="columns" />
+		FROM department
+		WHERE
+		id = #{id} 	</select>
+
+	<!-- selsect -->
+	<select id="getDepartments" resultType="com.mxg.bybo.model.Department">
+		SELECT
+		<include refid="columns" />
+		FROM department
+		<include refid="where_sql" />
+	</select>
+		
+			<!-- selsect -->
+	<select id="getDepartmentsForPage" resultType="com.mxg.bybo.model.Department">
+		SELECT
+		<include refid="columns" />
+		FROM department
+		where 1=1
+		<foreach collection="conditions" item="condition">
+			${condition.exp}
+		</foreach>
+	</select>
+	
+	<select id="getDepartmentsByCondition" resultType="com.mxg.bybo.model.Department">
+		SELECT
+		<include refid="columns" />
+		FROM department
+		where 1=1
+		<foreach collection="conditions" item="condition">
+			${condition.exp}
+		</foreach>
+	</select>
+
+
+</mapper>

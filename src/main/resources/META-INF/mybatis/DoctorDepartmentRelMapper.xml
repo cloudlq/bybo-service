@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mxg.bybo.dao.DoctorDepartmentRelDao">
+
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		doctor_id,department_id
+	    ]]>
+	</sql>
+
+	<!--保存 -->
+	<insert id="insertDoctorDepartmentRel">
+	    <![CDATA[
+	        INSERT INTO doctor_department_rel ( 
+	        	doctor_id,department_id
+	        ) VALUES (
+	        	#{doctorId} ,
+	        	#{departmentId} 
+	        )
+	    ]]>
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="insertDoctorDepartmentRelBatch">
+	    <![CDATA[
+	        INSERT INTO doctor_department_rel (
+	        	doctor_id,department_id
+	        ) VALUES 
+	         ]]>
+		<foreach item="item" collection="list" separator=",">
+			(
+						#{item.doctorId} ,
+						#{item.departmentId} 
+			)
+		</foreach>
+
+	</insert>
+
+	<!-- update 条件组合 -->
+	<sql id="update_sql">
+		<set>
+			<if test="doctorId != null">
+				doctor_id = #{doctorId} ,
+			</if>
+			<if test="departmentId != null">
+				department_id = #{departmentId} 
+			</if>
+		</set>
+	</sql>
+
+    <!-- 模糊查询这样： 字段名 LIKE CONCAT('%',CONCAT(#{model.userName},'%')) -->
+	<!-- where 条件组合 -->
+	<sql id="where_sql">
+		<where>
+			<if test="doctorDepartmentRel.doctorId != null">
+				 doctor_id = #{doctorDepartmentRel.doctorId} 
+			</if>
+			<if test="doctorDepartmentRel.departmentId != null">
+				 and  department_id = #{doctorDepartmentRel.departmentId} 
+			</if>
+		</where>
+	</sql>
+
+	<!-- 修改 -->
+	<update id="updateDoctorDepartmentRelById">
+		UPDATE doctor_department_rel
+		<include refid="update_sql" />
+		WHERE
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteDoctorDepartmentRelById">
+		DELETE FROM doctor_department_rel
+		WHERE
+		doctor_id = #{doctorId}
+	</delete>
+
+	<!-- 根据doctorId删除 -->
+	<delete id="deleteRel">
+		DELETE FROM doctor_department_rel
+		WHERE
+		doctor_id = #{doctorId}
+	</delete>
+
+	<!-- selsect -->
+	<select id="getDoctorDepartmentRelById" resultType="com.mxg.bybo.model.DoctorDepartmentRel">
+		SELECT
+		<include refid="columns" />
+		FROM doctor_department_rel
+		WHERE
+	</select>
+
+	<select id="getDepartmentIds" resultType="Long">
+		SELECT
+		department_id
+		FROM doctor_department_rel
+		WHERE
+	    doctor_id = #{doctorId}
+	</select>
+
+	<!-- selsect -->
+	<select id="getDoctorDepartmentRels" resultType="com.mxg.bybo.model.DoctorDepartmentRel">
+		SELECT
+		<include refid="columns" />
+		FROM doctor_department_rel
+		<include refid="where_sql" />
+	</select>
+		
+			<!-- selsect -->
+	<select id="getDoctorDepartmentRelsForPage" resultType="com.mxg.bybo.model.DoctorDepartmentRel">
+		SELECT
+		<include refid="columns" />
+		FROM doctor_department_rel
+		<include refid="where_sql" />
+	</select>
+
+
+</mapper>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans      
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd      
+	http://www.springframework.org/schema/security      
+	http://www.springframework.org/schema/security/spring-security-4.0.xsd ">
+
+	<http pattern="/v2/api-docs/**" security="none" />
+	<http pattern="/swagger-resources/**" security="none" />
+	<http pattern="/webjars/**" security="none" />
+	<http pattern="/swagger**" security="none" />
+	<http pattern="/common/**" security="none" />
+	<http pattern="/error" security="none" />
+	<http pattern="/login.html" security="none" />
+	<http pattern="/push/registerClientId" security="none" />
+	<http pattern="/push/**" security="none" />
+	<http pattern="/dwr/**" security="none" />
+	<http pattern="/unLogin" security="none" />
+	<http pattern="/register" security="none" />
+	<http pattern="/file/*" security="none" />
+	<http pattern="/gw/*" security="none" />
+	
+	<http use-expressions="true" entry-point-ref="sysAuthenticationEntryPoint"
+		authentication-manager-ref="authenticationManager">
+		<csrf disabled="true" />
+		<custom-filter ref="simpleExceptionFilter" before="FORM_LOGIN_FILTER " />
+		<custom-filter ref="urlFilter" before="SWITCH_USER_FILTER" />
+		<custom-filter ref="simpleLoginFilter" position="FORM_LOGIN_FILTER" />
+		<intercept-url pattern="/**" access="isAuthenticated()" />
+		<logout invalidate-session="true" delete-cookies="JSESSIONID,SESSIONID,name"
+			success-handler-ref="logoutAuthenticationSuccessHandler" />
+	</http>
+	<authentication-manager alias="authenticationManager"
+		erase-credentials="false">
+		<authentication-provider ref="passwordAuthenticationProvider" />
+		<authentication-provider ref="accountKitAuthenticationProvider" />
+
+	</authentication-manager>
+	<beans:bean id="simpleLoginFilter"
+		class="basic.authority.authentication.filter.SimpleLoginFilter">
+		<beans:constructor-arg value="/login*" />
+		<beans:property name="tokenResolvers">
+			<beans:list>
+				<beans:ref bean="passwordAuthenticationTokenResolver" />
+				<beans:ref bean="accountKitAuthenticationTokenResolver" />
+			</beans:list>
+		</beans:property>
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<beans:property name="namePath" value="/test/" />
+
+		<beans:property name="authenticationSuccessHandler"
+			ref="loginAuthenticationSuccessHandler" />
+		<beans:property name="authenticationFailureHandler"
+			ref="loginAuthenticationFailureHandler" />
+	</beans:bean>
+	<beans:bean id="simpleExceptionFilter"
+		class="basic.authority.authentication.filter.SimpleExceptionFilter">
+	</beans:bean>
+	<beans:bean id="loginAuthenticationSuccessHandler"
+		class="basic.authority.authentication.handler.LoginAuthenticationSuccessHandler">
+		<beans:property name="defaultTargetUrl" value="/home"></beans:property>
+	</beans:bean>
+	<beans:bean id="logoutAuthenticationSuccessHandler"
+		class="basic.authority.authentication.handler.LogoutAuthenticationSuccessHandler">
+	</beans:bean>
+	<beans:bean id="loginAuthenticationFailureHandler"
+		class="basic.authority.authentication.handler.LoginAuthenticationFailureHandler">
+		<beans:property name="defaultFailureUrl" value="/"></beans:property>
+		<beans:property name="useForward" value="true"></beans:property>
+	</beans:bean>
+
+	<beans:bean id="passwordAuthenticationProvider"
+		class="basic.authority.authentication.provider.PasswordAuthenticationProvider">
+		<beans:property name="passwordEncoder" ref="passwordEncoder" />
+	</beans:bean>
+	<beans:bean id="accountKitAuthenticationProvider"
+		class="basic.authority.authentication.provider.AccountKitAuthenticationProvider">
+	</beans:bean>
+	<beans:bean id="passwordAuthenticationTokenResolver"
+		class="basic.authority.authentication.resolver.PasswordAuthenticationTokenResolver">
+		<beans:property name="parameterName" value="loginModeType" />
+		<beans:property name="parameterValue" value="1" />
+	</beans:bean>
+	<beans:bean id="accountKitAuthenticationTokenResolver"
+		class="basic.authority.authentication.resolver.AccountKitAuthenticationTokenResolver">
+		<beans:property name="parameterName" value="loginModeType" />
+		<beans:property name="parameterValue" value="2" />
+	</beans:bean>
+	<beans:bean id="sysAuthenticationEntryPoint"
+		class="basic.authority.authentication.entrypoint.SysAuthenticationEntryPoint">
+		<beans:constructor-arg>
+			<beans:value>/unLogin</beans:value>
+		</beans:constructor-arg>
+	</beans:bean>
+	<!-- <beans:bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<beans:property name="maxTotal" value="300" />
+		<beans:property name="maxIdle" value="100" />
+		<beans:property name="maxWaitMillis" value="10000" />
+		<beans:property name="testOnBorrow" value="true" />
+
+	</beans:bean>
+	<beans:bean id="connectionFactory"
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<beans:property name="usePool" value="true" />
+		<beans:property name="hostName" value="${redis.host}" />
+		<beans:property name="port" value="${redis.port}" />
+		<beans:property name="password" value="${redis.password}" />
+		<beans:property name="poolConfig" ref="poolConfig" />
+	</beans:bean>
+	<beans:bean
+		class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
+		<beans:property name="maxInactiveIntervalInSeconds"
+			value="600" />
+	</beans:bean>
+
+
+	<beans:bean
+		class="org.springframework.security.web.session.HttpSessionEventPublisher" />
+
+	<beans:bean id="connectionFactory2"
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<beans:property name="usePool" value="true" />
+		<beans:property name="hostName" value="${redis.host}" />
+		<beans:property name="port" value="${redis.port}" />
+		<beans:property name="database" value="1" />
+		<beans:property name="password" value="${redis.password}" />
+		<beans:property name="poolConfig" ref="poolConfig" />
+	</beans:bean>
+
+	<beans:bean id="redisTemplate2"
+		class="org.springframework.data.redis.core.StringRedisTemplate">
+		<beans:property name="connectionFactory" ref="connectionFactory2" />
+	</beans:bean>
+
+	<beans:bean id="redisQueueTopicService"
+		class="basic.common.queue.redis.handler.RedisQueueSubscribeService">
+		<beans:constructor-arg name="redisTemplate" ref="redisTemplate2" />
+	</beans:bean>
+
+	<beans:bean id="redisQueuePublishService"
+		class="basic.common.queue.redis.handler.RedisQueuePublishService">
+		<beans:constructor-arg name="redisTemplate" ref="redisTemplate2" />
+	</beans:bean>
+ -->
+    <!-- 密码加密bean -->
+    <beans:bean id="passwordEncoder"
+                class="org.springframework.security.crypto.password.StandardPasswordEncoder">
+        <beans:constructor-arg name="secret" value="authority"/>
+    </beans:bean>
+</beans:beans>

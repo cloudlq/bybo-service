@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mxg.bybo.dao.KnowledgeDao">
+
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		id,title,content,add_time,update_time,author,language,department_id,department_name,category_ids,category_names
+	    ]]>
+	</sql>
+
+	<!--保存 -->
+	<insert id="insertKnowledge">
+	    <![CDATA[
+	        INSERT INTO knowledge ( 
+	        	id,title,content,add_time,update_time,author,language,department_id,department_name,category_ids,category_names
+	        ) VALUES (
+	        	#{id} ,
+	        	#{title} ,
+	        	#{content} ,
+	        	#{addTime} ,
+	        	#{updateTime} ,
+	        	#{author} ,
+	        	#{language} ,
+	        	#{departmentId} ,
+	        	#{departmentName} ,
+	        	#{categoryIds} ,
+	        	#{categoryNames} 
+	        )
+	    ]]>
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="insertKnowledgeBatch">
+	    <![CDATA[
+	        INSERT INTO knowledge (
+	        	id,title,content,add_time,update_time,author,language,department_id,department_name,category_ids,category_names
+	        ) VALUES 
+	         ]]>
+		<foreach item="item" collection="list" separator=",">
+			(
+						#{item.id} ,
+						#{item.title} ,
+						#{item.content} ,
+						#{item.addTime} ,
+						#{item.updateTime} ,
+						#{item.author} ,
+						#{item.language} ,
+						#{item.departmentId} ,
+						#{item.departmentName} ,
+						#{item.categoryIds} ,
+						#{item.categoryNames} 
+			)
+		</foreach>
+
+	</insert>
+
+	<!-- update 条件组合 -->
+	<sql id="update_sql">
+		<set>
+			<if
+				test="title != null and title != ''">
+				title = #{title}
+				,
+			</if>
+			<if
+				test="content != null and content != ''">
+				content = #{content}
+				,
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime} ,
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime} ,
+			</if>
+			<if
+				test="author != null and author != ''">
+				author = #{author}
+				,
+			</if>
+			<if
+				test="language != null and language != ''">
+				language = #{language}
+				,
+			</if>
+			<if test="departmentId != null">
+				department_id = #{departmentId} ,
+			</if>
+			<if
+				test="departmentName != null and departmentName != ''">
+				department_name = #{departmentName}
+				,
+			</if>
+			<if
+				test="categoryIds != null and categoryIds != ''">
+				category_ids = #{categoryIds}
+				,
+			</if>
+			<if
+				test="categoryNames != null and categoryNames != ''">
+				category_names = #{categoryNames}
+				
+			</if>
+		</set>
+	</sql>
+
+    <!-- 模糊查询这样： 字段名 LIKE CONCAT('%',CONCAT(#{model.userName},'%')) -->
+	<!-- where 条件组合 -->
+	<sql id="where_sql">
+		<where>
+			<if
+				test="knowledge.title != null and knowledge.title != ''">
+				title = #{knowledge.title}				 
+			</if>
+			<if
+				test="knowledge.content != null and knowledge.content != ''">
+				 and content = #{knowledge.content}				 
+			</if>
+			<if test="knowledge.addTime != null">
+				 and add_time = #{knowledge.addTime} 
+			</if>
+			<if test="knowledge.updateTime != null">
+				 and update_time = #{knowledge.updateTime} 
+			</if>
+			<if
+				test="knowledge.author != null and knowledge.author != ''">
+				 and author = #{knowledge.author}				 
+			</if>
+			<if
+				test="knowledge.language != null and knowledge.language != ''">
+				 and language = #{knowledge.language}				 
+			</if>
+			<if test="knowledge.departmentId != null">
+				 and  department_id = #{knowledge.departmentId} 
+			</if>
+			<if
+				test="knowledge.departmentName != null and knowledge.departmentName != ''">
+				 and department_name = #{knowledge.departmentName}				 
+			</if>
+			<if
+				test="knowledge.categoryIds != null and knowledge.categoryIds != ''">
+				 and category_ids = #{knowledge.categoryIds}				 
+			</if>
+			<if
+				test="knowledge.categoryNames != null and knowledge.categoryNames != ''">
+				 and category_names = #{knowledge.categoryNames}				 
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 修改 -->
+	<update id="updateKnowledgeById">
+		UPDATE knowledge
+		<include refid="update_sql" />
+		WHERE
+		id =
+		#{id} 	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteKnowledgeById">
+		DELETE FROM knowledge
+		WHERE
+		id = #{id} 	</delete>
+
+
+
+	<!-- selsect -->
+	<select id="getKnowledgeById" resultType="com.mxg.bybo.model.Knowledge">
+		SELECT
+		<include refid="columns" />
+		FROM knowledge
+		WHERE
+		id = #{id} 	</select>
+
+	<!-- selsect -->
+	<select id="getKnowledges" resultType="com.mxg.bybo.model.Knowledge">
+		SELECT
+		<include refid="columns" />
+		FROM knowledge
+		<include refid="where_sql" />
+	</select>
+		
+			<!-- selsect -->
+	<select id="getKnowledgesForPage" resultType="com.mxg.bybo.model.Knowledge">
+		SELECT
+		<include refid="columns" />
+		FROM knowledge
+		<include refid="where_sql" />
+		order by id desc
+	</select>
+
+
+	<select id="getKnowledgesByConditions" resultType="com.mxg.bybo.model.Knowledge">
+		SELECT
+		<include refid="columns" />
+		FROM knowledge
+		where 1=1
+		<foreach collection="conditions" item="condition">
+			${condition.exp}
+		</foreach>
+		order by id desc
+	</select>
+
+</mapper>

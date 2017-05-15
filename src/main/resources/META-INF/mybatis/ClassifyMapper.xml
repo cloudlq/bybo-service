@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mxg.bybo.dao.ClassifyDao">
+
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		id,name,language
+	    ]]>
+	</sql>
+
+	<!--保存 -->
+	<insert id="insertClassify">
+	    <![CDATA[
+	        INSERT INTO classify ( 
+	        	id,name,language
+	        ) VALUES (
+	        	#{id} ,
+	        	#{name} ,
+	        	#{language} 
+	        )
+	    ]]>
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="insertClassifyBatch">
+	    <![CDATA[
+	        INSERT INTO classify (
+	        	id,name,language
+	        ) VALUES 
+	         ]]>
+		<foreach item="item" collection="list" separator=",">
+			(
+						#{item.id} ,
+						#{item.name} ,
+						#{item.language} 
+			)
+		</foreach>
+
+	</insert>
+
+	<!-- update 条件组合 -->
+	<sql id="update_sql">
+		<set>
+			<if
+				test="name != null and name != ''">
+				name = #{name}
+				,
+			</if>
+			<if
+				test="language != null and language != ''">
+				language = #{language}
+				
+			</if>
+		</set>
+	</sql>
+
+    <!-- 模糊查询这样： 字段名 LIKE CONCAT('%',CONCAT(#{model.userName},'%')) -->
+	<!-- where 条件组合 -->
+	<sql id="where_sql">
+		<where>
+			<if
+				test="classify.name != null and classify.name != ''">
+				name = #{classify.name}				 
+			</if>
+			<if
+				test="classify.language != null and classify.language != ''">
+				 and language = #{classify.language}				 
+			</if>
+		</where>
+	</sql>
+
+	<!-- 修改 -->
+	<update id="updateClassifyById">
+		UPDATE classify
+		<include refid="update_sql" />
+		WHERE
+		id =
+		#{id} 	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteClassifyById">
+		DELETE FROM classify
+		WHERE
+		id = #{id} 	</delete>
+
+
+
+	<!-- selsect -->
+	<select id="getClassifyById" resultType="com.mxg.bybo.model.Classify">
+		SELECT
+		<include refid="columns" />
+		FROM classify
+		WHERE
+		id = #{id} 	</select>
+
+	<!-- selsect -->
+	<select id="getClassifys" resultType="com.mxg.bybo.model.Classify">
+		SELECT
+		<include refid="columns" />
+		FROM classify
+		<include refid="where_sql" />
+	</select>
+		
+			<!-- selsect -->
+	<select id="getClassifysForPage" resultType="com.mxg.bybo.model.Classify">
+		SELECT
+		<include refid="columns" />
+		FROM classify
+		<include refid="where_sql" />
+	</select>
+
+
+</mapper>

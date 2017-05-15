@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mxg.bybo.dao.SimilarKnowledgeDao">
+
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		knowledge_id,similar_id
+	    ]]>
+	</sql>
+
+	<!--保存 -->
+	<insert id="insertSimilarKnowledge">
+	    <![CDATA[
+	        INSERT INTO similar_knowledge ( 
+	        	knowledge_id,similar_id
+	        ) VALUES (
+	        	#{knowledgeId} ,
+	        	#{similarId} 
+	        )
+	    ]]>
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="insertSimilarKnowledgeBatch">
+	    <![CDATA[
+	        INSERT INTO similar_knowledge (
+	        	knowledge_id,similar_id
+	        ) VALUES 
+	         ]]>
+		<foreach item="item" collection="list" separator=",">
+			(
+						#{item.knowledgeId} ,
+						#{item.similarId} 
+			)
+		</foreach>
+
+	</insert>
+
+	<!-- update 条件组合 -->
+	<sql id="update_sql">
+		<set>
+			<if test="similarId != null">
+				similar_id = #{similarId} 
+			</if>
+		</set>
+	</sql>
+
+    <!-- 模糊查询这样： 字段名 LIKE CONCAT('%',CONCAT(#{model.userName},'%')) -->
+	<!-- where 条件组合 -->
+	<sql id="where_sql">
+		<where>
+			<if test="similarKnowledge.similarId != null">
+				 similar_id = #{similarKnowledge.similarId} 
+			</if>
+		</where>
+	</sql>
+
+	<!-- 修改 -->
+	<update id="updateSimilarKnowledgeById">
+		UPDATE similar_knowledge
+		<include refid="update_sql" />
+		WHERE
+		knowledge_id =
+		#{knowledgeId} 	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteSimilarKnowledgeById">
+		DELETE FROM similar_knowledge
+		WHERE
+		knowledge_id = #{knowledgeId} 	</delete>
+
+
+
+	<!-- selsect -->
+	<select id="getSimilarKnowledgeById" resultType="com.mxg.bybo.model.SimilarKnowledge">
+		SELECT
+		<include refid="columns" />
+		FROM similar_knowledge
+		WHERE
+		knowledge_id = #{knowledgeId} 	</select>
+
+	<!-- selsect -->
+	<select id="getSimilarKnowledges" resultType="com.mxg.bybo.model.SimilarKnowledge">
+		SELECT
+		<include refid="columns" />
+		FROM similar_knowledge
+		<include refid="where_sql" />
+	</select>
+		
+			<!-- selsect -->
+	<select id="getSimilarKnowledgesForPage" resultType="com.mxg.bybo.model.SimilarKnowledge">
+		SELECT
+		<include refid="columns" />
+		FROM similar_knowledge
+		<include refid="where_sql" />
+	</select>
+
+
+</mapper>

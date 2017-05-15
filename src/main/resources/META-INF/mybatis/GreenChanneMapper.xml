@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mxg.bybo.dao.GreenChanneDao">
+
+
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		id,name,sex,phone,address,content,picture,region_id,create_time,status
+	    ]]>
+	</sql>
+
+	<!--保存 -->
+	<insert id="insertGreenChanne">
+	    <![CDATA[
+	        INSERT INTO green_channe ( 
+	        	id,name,sex,phone,address,content,picture,region_id,create_time,status
+	        ) VALUES (
+	        	#{id} ,
+	        	#{name} ,
+	        	#{sex} ,
+	        	#{phone} ,
+	        	#{address} ,
+	        	#{content} ,
+	        	#{picture} ,
+	        	#{regionId} ,
+	        	#{createTime} ,
+	        	#{status} 
+	        )
+	    ]]>
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="insertGreenChanneBatch">
+	    <![CDATA[
+	        INSERT INTO green_channe (
+	        	id,name,sex,phone,address,content,picture,region_id,create_time,status
+	        ) VALUES 
+	         ]]>
+		<foreach item="item" collection="list" separator=",">
+			(
+						#{item.id} ,
+						#{item.name} ,
+						#{item.sex} ,
+						#{item.phone} ,
+						#{item.address} ,
+						#{item.content} ,
+						#{item.picture} ,
+						#{item.regionId} ,
+						#{item.createTime} ,
+						#{item.status} 
+			)
+		</foreach>
+
+	</insert>
+
+	<!-- update 条件组合 -->
+	<sql id="update_sql">
+		<set>
+			<if
+				test="name != null and name != ''">
+				name = #{name}
+				,
+			</if>
+			<if
+				test="sex != null and sex != ''">
+				sex = #{sex}
+				,
+			</if>
+			<if
+				test="phone != null and phone != ''">
+				phone = #{phone}
+				,
+			</if>
+			<if
+				test="address != null and address != ''">
+				address = #{address}
+				,
+			</if>
+			<if
+				test="content != null and content != ''">
+				content = #{content}
+				,
+			</if>
+			<if
+				test="picture != null and picture != ''">
+				picture = #{picture}
+				,
+			</if>
+			<if test="regionId != null">
+				region_id = #{regionId} ,
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime} ,
+			</if>
+			<if test="status != null">
+				status = #{status} 
+			</if>
+		</set>
+	</sql>
+
+    <!-- 模糊查询这样： 字段名 LIKE CONCAT('%',CONCAT(#{model.userName},'%')) -->
+	<!-- where 条件组合 -->
+	<sql id="where_sql">
+		<where>
+			<if
+				test="greenChanne.name != null and greenChanne.name != ''">
+				name = #{greenChanne.name}				 
+			</if>
+			<if
+				test="greenChanne.sex != null and greenChanne.sex != ''">
+				 and sex = #{greenChanne.sex}				 
+			</if>
+			<if
+				test="greenChanne.phone != null and greenChanne.phone != ''">
+				 and phone = #{greenChanne.phone}				 
+			</if>
+			<if
+				test="greenChanne.address != null and greenChanne.address != ''">
+				 and address = #{greenChanne.address}				 
+			</if>
+			<if
+				test="greenChanne.content != null and greenChanne.content != ''">
+				 and content = #{greenChanne.content}				 
+			</if>
+			<if
+				test="greenChanne.picture != null and greenChanne.picture != ''">
+				 and picture = #{greenChanne.picture}				 
+			</if>
+			<if test="greenChanne.regionId != null">
+				 and  region_id = #{greenChanne.regionId} 
+			</if>
+			<if test="greenChanne.createTime != null">
+				 and create_time = #{greenChanne.createTime} 
+			</if>
+			<if test="greenChanne.status != null">
+				 and  status = #{greenChanne.status} 
+			</if>
+		</where>
+	</sql>
+
+	<!-- 修改 -->
+	<update id="updateGreenChanneById">
+		UPDATE green_channe
+		<include refid="update_sql" />
+		WHERE
+		id =
+		#{id} 	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteGreenChanneById">
+		DELETE FROM green_channe
+		WHERE
+		id = #{id} 	</delete>
+
+
+
+	<!-- selsect -->
+	<select id="getGreenChanneById" resultType="com.mxg.bybo.model.GreenChanne">
+		SELECT
+		<include refid="columns" />
+		FROM green_channe
+		WHERE
+		id = #{id} 	</select>
+
+	<!-- selsect -->
+	<select id="getGreenChannes" resultType="com.mxg.bybo.model.GreenChanne">
+		SELECT
+		<include refid="columns" />
+		FROM green_channe
+		<include refid="where_sql" />
+	</select>
+		
+			<!-- selsect -->
+	<select id="getGreenChannesForPage" resultType="com.mxg.bybo.model.GreenChanne">
+		SELECT
+		<include refid="columns" />
+		FROM green_channe
+		<include refid="where_sql" />
+		order by create_time desc
+	</select>
+
+
+</mapper>

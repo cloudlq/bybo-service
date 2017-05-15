@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mxg.bybo.dao.RegionDao">
+
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		region_id,cn_name,parent_region_id,cn_address,phone,email,logo_image_url,url,en_name,en_address
+	    ]]>
+	</sql>
+	
+	<sql id="partyColumns">
+	    <![CDATA[
+		PARTY_ID,COMMON_REGION_ID,PARTY_SN,STATUS_CODE,USER_NAME,PASSWORD,REMARK,LAST_LOGIN_TIME,LAST_LOGIN_IP,IS_LOCKED,LOCKED_DATE,LOGIN_FAILURE_COUNT,REGISTER_IP,EMAIL,COUNTRY_CODE,PHONE,NICK_NAME,CREATE_TIME,CARD_NO,SEX,PARTY_TYPE,SESSION_ID
+	    ]]>
+	</sql>
+
+	<!--保存 -->
+	<insert id="insertRegion">
+	    <![CDATA[
+	        INSERT INTO region ( 
+	        	region_id,cn_name,parent_region_id,cn_address,phone,email,logo_image_url,url,en_name,en_address
+	        ) VALUES (
+	        	#{regionId} ,
+	        	#{cnName} ,
+	        	#{parentRegionId} ,
+	        	#{cnAddress} ,
+	        	#{phone} ,
+	        	#{email} ,
+	        	#{logoImageUrl} ,
+	        	#{url} ,
+	        	#{enName} ,
+	        	#{enAddress} 
+	        )
+	    ]]>
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="insertRegionBatch">
+	    <![CDATA[
+	        INSERT INTO region (
+	        	region_id,cn_name,parent_region_id,cn_address,phone,email,logo_image_url,url,en_name,en_address
+	        ) VALUES 
+	         ]]>
+		<foreach item="item" collection="list" separator=",">
+			(
+						#{item.regionId} ,
+						#{item.cnName} ,
+						#{item.parentRegionId} ,
+						#{item.cnAddress} ,
+						#{item.phone} ,
+						#{item.email} ,
+						#{item.logoImageUrl} ,
+						#{item.url} ,
+						#{item.enName} ,
+						#{item.enAddress} 
+			)
+		</foreach>
+
+	</insert>
+
+	<!-- update 条件组合 -->
+	<sql id="update_sql">
+		<set>
+			<if
+				test="cnName != null and cnName != ''">
+				cn_name = #{cnName}
+				,
+			</if>
+			<if
+				test="parentRegionId != null and parentRegionId != ''">
+				parent_region_id = #{parentRegionId}
+				,
+			</if>
+			<if
+				test="cnAddress != null and cnAddress != ''">
+				cn_address = #{cnAddress}
+				,
+			</if>
+			<if
+				test="phone != null and phone != ''">
+				phone = #{phone}
+				,
+			</if>
+			<if
+				test="email != null and email != ''">
+				email = #{email}
+				,
+			</if>
+			<if
+				test="logoImageUrl != null and logoImageUrl != ''">
+				logo_image_url = #{logoImageUrl}
+				,
+			</if>
+			<if
+				test="url != null and url != ''">
+				url = #{url}
+				,
+			</if>
+			<if
+				test="enName != null and enName != ''">
+				en_name = #{enName}
+				,
+			</if>
+			<if
+				test="enAddress != null and enAddress != ''">
+				en_address = #{enAddress}
+				
+			</if>
+		</set>
+	</sql>
+
+    <!-- 模糊查询这样： 字段名 LIKE CONCAT('%',CONCAT(#{model.userName},'%')) -->
+	<!-- where 条件组合 -->
+	<sql id="where_sql">
+		<where>
+			<if
+				test="region.cnName != null and region.cnName != ''">
+				cn_name = #{region.cnName}				 
+			</if>
+			<if
+				test="region.parentRegionId != null and region.parentRegionId != ''">
+				 and parent_region_id = #{region.parentRegionId}				 
+			</if>
+			<if
+				test="region.cnAddress != null and region.cnAddress != ''">
+				 and cn_address = #{region.cnAddress}				 
+			</if>
+			<if
+				test="region.phone != null and region.phone != ''">
+				 and phone = #{region.phone}				 
+			</if>
+			<if
+				test="region.email != null and region.email != ''">
+				 and email = #{region.email}				 
+			</if>
+			<if
+				test="region.logoImageUrl != null and region.logoImageUrl != ''">
+				 and logo_image_url = #{region.logoImageUrl}				 
+			</if>
+			<if
+				test="region.url != null and region.url != ''">
+				 and url = #{region.url}				 
+			</if>
+			<if
+				test="region.enName != null and region.enName != ''">
+				 and en_name = #{region.enName}				 
+			</if>
+			<if
+				test="region.enAddress != null and region.enAddress != ''">
+				 and en_address = #{region.enAddress}				 
+			</if>
+		</where>
+	</sql>
+
+	<!-- 修改 -->
+	<update id="updateRegionById">
+		UPDATE region
+		<include refid="update_sql" />
+		WHERE
+		region_id =
+		#{regionId} 	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteRegionById">
+		DELETE FROM region
+		WHERE
+		region_id = #{regionId} 	</delete>
+
+
+
+	<!-- selsect -->
+	<select id="getRegionById" resultType="com.mxg.bybo.model.Region">
+		SELECT
+		<include refid="columns" />
+		FROM region
+		WHERE
+		region_id = #{regionId} 	</select>
+
+	<!-- selsect -->
+	<select id="getRegions" resultType="com.mxg.bybo.model.Region">
+		SELECT
+		<include refid="columns" />
+		FROM region
+		<include refid="where_sql" />
+		order by  convert(cn_name using gbk) asc
+	</select>
+		
+			<!-- selsect -->
+	<select id="getRegionsForPage" resultType="com.mxg.bybo.model.Region">
+		SELECT
+		<include refid="columns" />
+		FROM region
+		where 1=1
+		<foreach collection="conditions" item="condition">
+			${condition.exp}
+        </foreach>
+	</select>
+
+	<select id="getPartysForPage" resultType="basic.authority.model.Party">
+		SELECT
+		<include refid="partyColumns" />
+		FROM PARTY
+		where 1=1
+		<foreach collection="conditions" item="condition">
+			${condition.exp}
+        </foreach>
+        
+	</select>
+
+
+</mapper>

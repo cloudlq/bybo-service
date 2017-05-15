@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mxg.bybo.dao.StoreDao">
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		id,name,address,phone,telphone,user_name,region_id,language,region_name,picture
+	    ]]>
+	</sql>
+
+	<!--保存 -->
+	<insert id="insertStore">
+	    <![CDATA[
+	        INSERT INTO store ( 
+	        	id,name,address,phone,telphone,user_name,region_id,language,region_name,picture
+	        ) VALUES (
+	        	#{id} ,
+	        	#{name} ,
+	        	#{address} ,
+	        	#{phone} ,
+	        	#{telphone} ,
+	        	#{userName} ,
+	        	#{regionId} ,
+	        	#{language} ,
+	        	#{regionName} ,
+	        	#{picture} 
+	        )
+	    ]]>
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="insertStoreBatch">
+	    <![CDATA[
+	        INSERT INTO store (
+	        	id,name,address,phone,telphone,user_name,region_id,language,region_name,picture
+	        ) VALUES 
+	         ]]>
+		<foreach item="item" collection="list" separator=",">
+			(
+						#{item.id} ,
+						#{item.name} ,
+						#{item.address} ,
+						#{item.phone} ,
+						#{item.telphone} ,
+						#{item.userName} ,
+						#{item.regionId} ,
+						#{item.language} ,
+						#{item.regionName} ,
+						#{item.picture} 
+			)
+		</foreach>
+
+	</insert>
+
+	<!-- update 条件组合 -->
+	<sql id="update_sql">
+		<set>
+			<if
+				test="name != null and name != ''">
+				name = #{name}
+				,
+			</if>
+			<if
+				test="address != null and address != ''">
+				address = #{address}
+				,
+			</if>
+			<if
+				test="phone != null and phone != ''">
+				phone = #{phone}
+				,
+			</if>
+			<if
+				test="telphone != null and telphone != ''">
+				telphone = #{telphone}
+				,
+			</if>
+			<if
+				test="userName != null and userName != ''">
+				user_name = #{userName}
+				,
+			</if>
+			<if test="regionId != null">
+				region_id = #{regionId} ,
+			</if>
+			<if
+				test="language != null and language != ''">
+				language = #{language}
+				,
+			</if>
+			<if
+				test="regionName != null and regionName != ''">
+				region_name = #{regionName}
+				,
+			</if>
+			<if
+				test="picture != null and picture != ''">
+				picture = #{picture}
+				
+			</if>
+		</set>
+	</sql>
+
+    <!-- 模糊查询这样： 字段名 LIKE CONCAT('%',CONCAT(#{model.userName},'%')) -->
+	<!-- where 条件组合 -->
+	<sql id="where_sql">
+		<where>
+			<if
+				test="store.name != null and store.name != ''">
+				name = #{store.name}				 
+			</if>
+			<if
+				test="store.address != null and store.address != ''">
+				 and address = #{store.address}				 
+			</if>
+			<if
+				test="store.phone != null and store.phone != ''">
+				 and phone = #{store.phone}				 
+			</if>
+			<if
+				test="store.telphone != null and store.telphone != ''">
+				 and telphone = #{store.telphone}				 
+			</if>
+			<if
+				test="store.userName != null and store.userName != ''">
+				 and user_name = #{store.userName}				 
+			</if>
+			<if test="store.regionId != null">
+				 and  region_id = #{store.regionId} 
+			</if>
+			<if
+				test="store.language != null and store.language != ''">
+				 and language = #{store.language}				 
+			</if>
+			<if
+				test="store.regionName != null and store.regionName != ''">
+				 and region_name = #{store.regionName}				 
+			</if>
+			<if
+				test="store.picture != null and store.picture != ''">
+				 and picture = #{store.picture}				 
+			</if>
+		</where>
+	</sql>
+
+
+	<!-- 修改 -->
+	<update id="updateStoreById">
+		UPDATE store
+		<include refid="update_sql" />
+		WHERE
+		id =
+		#{id} 	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteStoreById">
+		DELETE FROM store
+		WHERE
+		id = #{id} 	</delete>
+
+
+
+	<!-- selsect -->
+	<select id="getStoreById" resultType="com.mxg.bybo.model.Store">
+		SELECT
+		<include refid="columns" />
+		FROM store
+		WHERE
+		id = #{id} 	</select>
+
+	<!-- selsect -->
+	<select id="getStores" resultType="com.mxg.bybo.model.Store">
+		SELECT
+		<include refid="columns" />
+		FROM store
+		<include refid="where_sql" />
+		order by telphone desc
+	</select>
+		
+			<!-- selsect -->
+	<select id="getStoresForPage" resultType="com.mxg.bybo.model.Store">
+		SELECT
+		<include refid="columns" />
+		FROM store
+		where 1=1
+		<foreach collection="conditions" item="condition">
+			${condition.exp}
+		</foreach>
+	</select>
+
+
+</mapper>

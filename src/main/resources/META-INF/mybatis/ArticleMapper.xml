@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mxg.bybo.dao.ArticleDao">
+
+
+<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		id,title,content,add_time,update_time,category_id,category_name,region_id,image_url,language,author,summary,image_url2,department
+	    ]]>
+	</sql>
+
+	<!--保存 -->
+	<insert id="insertArticle">
+	    <![CDATA[
+	        INSERT INTO article ( 
+	        	id,title,content,add_time,update_time,category_id,category_name,region_id,image_url,language,author,summary,image_url2,department
+	        ) VALUES (
+	        	#{id} ,
+	        	#{title} ,
+	        	#{content} ,
+	        	#{addTime} ,
+	        	#{updateTime} ,
+	        	#{categoryId} ,
+	        	#{categoryName} ,
+	        	#{regionId} ,
+	        	#{imageUrl} ,
+	        	#{language} ,
+	        	#{author} ,
+	        	#{summary} ,
+	        	#{imageUrl2} ,
+	        	#{department} 
+	        )
+	    ]]>
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="insertArticleBatch">
+	    <![CDATA[
+	        INSERT INTO article (
+	        	id,title,content,add_time,update_time,category_id,category_name,region_id,image_url,language,author,summary,image_url2,department
+	        ) VALUES 
+	         ]]>
+		<foreach item="item" collection="list" separator=",">
+			(
+						#{item.id} ,
+						#{item.title} ,
+						#{item.content} ,
+						#{item.addTime} ,
+						#{item.updateTime} ,
+						#{item.categoryId} ,
+						#{item.categoryName} ,
+						#{item.regionId} ,
+						#{item.imageUrl} ,
+						#{item.language} ,
+						#{item.author} ,
+						#{item.summary} ,
+						#{item.imageUrl2} ,
+						#{item.department} 
+			)
+		</foreach>
+
+	</insert>
+
+	<!-- update 条件组合 -->
+	<sql id="update_sql">
+		<set>
+			<if
+				test="title != null and title != ''">
+				title = #{title}
+				,
+			</if>
+			<if
+				test="content != null and content != ''">
+				content = #{content}
+				,
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime} ,
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime} ,
+			</if>
+			<if
+				test="categoryId != null and categoryId != ''">
+				category_id = #{categoryId}
+				,
+			</if>
+			<if
+				test="categoryName != null and categoryName != ''">
+				category_name = #{categoryName}
+				,
+			</if>
+			<if test="regionId != null">
+				region_id = #{regionId} ,
+			</if>
+			<if
+				test="imageUrl != null and imageUrl != ''">
+				image_url = #{imageUrl}
+				,
+			</if>
+			<if
+				test="language != null and language != ''">
+				language = #{language}
+				,
+			</if>
+			<if
+				test="author != null and author != ''">
+				author = #{author}
+				,
+			</if>
+			<if
+				test="summary != null and summary != ''">
+				summary = #{summary}
+				,
+			</if>
+			<if
+				test="imageUrl2 != null and imageUrl2 != ''">
+				image_url2 = #{imageUrl2}
+				,
+			</if>
+			<if
+				test="department != null and department != ''">
+				department = #{department}
+				
+			</if>
+		</set>
+	</sql>
+
+    <!-- 模糊查询这样： 字段名 LIKE CONCAT('%',CONCAT(#{model.userName},'%')) -->
+	<!-- where 条件组合 -->
+	<sql id="where_sql">
+		<where>
+			<if
+				test="article.title != null and article.title != ''">
+				title = #{article.title}				 
+			</if>
+			<if
+				test="article.content != null and article.content != ''">
+				 and content = #{article.content}				 
+			</if>
+			<if test="article.addTime != null">
+				 and add_time = #{article.addTime} 
+			</if>
+			<if test="article.updateTime != null">
+				 and update_time = #{article.updateTime} 
+			</if>
+			<if
+				test="article.categoryId != null and article.categoryId != ''">
+				 and category_id = #{article.categoryId}				 
+			</if>
+			<if
+				test="article.categoryName != null and article.categoryName != ''">
+				 and category_name = #{article.categoryName}				 
+			</if>
+			<if test="article.regionId != null">
+				 and  region_id = #{article.regionId} 
+			</if>
+			<if
+				test="article.imageUrl != null and article.imageUrl != ''">
+				 and image_url = #{article.imageUrl}				 
+			</if>
+			<if
+				test="article.language != null and article.language != ''">
+				 and language = #{article.language}				 
+			</if>
+			<if
+				test="article.author != null and article.author != ''">
+				 and author = #{article.author}				 
+			</if>
+			<if
+				test="article.summary != null and article.summary != ''">
+				 and summary = #{article.summary}				 
+			</if>
+			<if
+				test="article.imageUrl2 != null and article.imageUrl2 != ''">
+				 and image_url2 = #{article.imageUrl2}				 
+			</if>
+			<if
+				test="article.department != null and article.department != ''">
+				 and department = #{article.department}				 
+			</if>
+		</where>
+	</sql>
+
+
+	<!-- 修改 -->
+	<update id="updateArticleById">
+		UPDATE article
+		<include refid="update_sql" />
+		WHERE
+		id =
+		#{id} 	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteArticleById">
+		DELETE FROM article
+		WHERE
+		id = #{id} 	</delete>
+
+
+
+	<!-- selsect -->
+	<select id="getArticleById" resultType="com.mxg.bybo.model.Article">
+		SELECT
+		<include refid="columns" />
+		FROM article
+		WHERE
+		id = #{id} 	</select>
+
+	<!-- selsect -->
+	<select id="getArticles" resultType="com.mxg.bybo.model.Article">
+		SELECT
+		<include refid="columns" />
+		FROM article
+		<include refid="where_sql" />
+		order by id desc
+	</select>
+		
+			<!-- selsect -->
+	<select id="getArticlesForPage" resultType="com.mxg.bybo.model.Article">
+		SELECT
+		<include refid="columns" />
+		FROM article
+		where 1=1
+		<foreach collection="conditions" item="condition">
+			${condition.exp}
+		</foreach>
+		order by id desc
+	</select>
+
+
+</mapper>
