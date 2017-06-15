@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mxg.bybo.model.Department;
 import com.mxg.bybo.model.req.MembershipReq;
 import com.mxg.bybo.model.resp.BonustransResp;
 import com.mxg.bybo.model.resp.MembershipResp;
 import com.mxg.bybo.model.resp.TransactionsResp;
+import com.mxg.bybo.service.DepartmentService;
 import com.mxg.bybo.service.HttpService;
+import com.mxg.bybo.service.ToHtmlService;
 
 /**
  * 分布式session测试
@@ -30,6 +33,12 @@ public class TestController {
 
 	@Autowired
 	private HttpService httpService;
+	
+	@Autowired
+	private DepartmentService departmentService;
+	
+	@Autowired
+	private ToHtmlService toHtmlService;
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	@ResponseBody
@@ -55,4 +64,19 @@ public class TestController {
 		return httpService.getTransactions(id);
 	}
 
+	
+	@RequestMapping(value = "/toHtml", method = RequestMethod.GET)
+	@ResponseBody
+	int toHtml(@RequestParam Long id) {
+		Department d = departmentService.getDepartmentById(id);
+		toHtmlService.toSubjectDetail(d);
+		return 1;
+	}
+	
+	@RequestMapping(value = "/toSubjectAllHtml", method = RequestMethod.GET)
+	@ResponseBody
+	int toSubjectAllHtml() {
+		toHtmlService.toSubjectDetailAll();
+		return 1;
+	}
 }

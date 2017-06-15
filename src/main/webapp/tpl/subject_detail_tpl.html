@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>学科详情</title>
+		<link href="css/base.css" rel="stylesheet" type="text/css" />
+		<link rel="icon" href="images/ico/favicon.ico" type="image/x-icon"/>
+		<script type="text/javascript" src="js/libs/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript" src="js/libs/jquery.ztree.core.min.js"></script>
+		<script type="text/javascript" src="js/common/_impl.js"></script>
+		<script type="text/javascript" src="js/common/fun.js"></script>
+		<script type="text/javascript" src="js/common/json.js"></script>
+		<script type="text/javascript" src="js/common/header.js"></script>
+		<script type="text/javascript" src="js/common/menuFun.js" ></script>
+		<script type="text/javascript" src="js/app/subjectDetail.js"></script>
+	</head>
+
+	<body>
+		<div class="bybo-body">
+
+			<!--头部-->
+			<div class="bybo-header" id="byboHeader">
+			</div>
+			
+		<!--主体部分-->
+			<div class="bybo-content">
+				<div class="w12">
+					<!--图片-->
+					<div class="zhenliao-banner">
+						<img src="images/zhenliao/zhenliao-banner.png" alt="" />
+					</div>
+
+					<div class="w10">
+					<!--左边导航-->
+						<!--左边导航-->
+						<div class="nav-box">
+							<ul class="nav-header fl">
+								<li class="header-txt">
+									<a>首页></a>
+								</li>
+								<li class="header-txt">
+									<a href="">学科介绍</a>
+								</li>
+							</ul>
+						</div>
+						
+						<div class="left-menu">
+							<ul id="leftTree" class="ztree"></ul>
+						</div>
+
+						<!--右边介绍-->
+						<div class="right-detail">
+							<div class="zhenliao_detail_header">
+								<img src="##icon##" alt="" id="departmentPicture" />
+								<span class="detail_oral" id="departmentName">##name##</span>
+							</div>
+							<div class="detail_oral_content">
+								<p class="oral_content_txt1" ><span class="bline"><span id="summaryTitle">##name##</span>中心</span></p>
+								<p class="oral_content_txt2" id="summary">##summary##</p>
+							</div>
+							<div class="detail_oral_content">
+								<p class="oral_content_txt1" ><span class="bline"><span id="serviceTitle">##name##</span>服务</span></p>
+								<p class="oral_content_txt2" id="service">##service##</p>
+							</div>
+							<div class="detail_oral_content">
+								<p class="oral_content_txt1" ><span class="bline"><span id="technicalTitle">##name##</span>技术</span></p>
+								<p class="oral_content_txt2" id="technical">##technical##</p>
+							</div>
+							<div class="oral-content-footer">
+								<p class="oral_content_txt1"><span class="bline"><span id="doctorsTitle">##name##</span>医生团队</span></p>
+								<div class="oral_img_box" id="doctorList">
+								</div>
+							</div>
+							<!--分页-->
+							<div class="navPage">
+								<div class="pageList fr" id="pageList">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--底部-->
+			<div class="bybo-footer">
+				<div class="w12">
+					<div class="foot-box">
+						<div class="footer-detail fl">
+							<img src="images/index/bybo-footer.png" alt="" />
+						</div>
+						<div class="footer-hotline fl" style="width: 225px;">
+							<p class="footer-txt">全国服务热线：</p>
+							<p class="bybo-number">400-000-003</p>
+						</div>
+						<div class="footer-info fl" style="width: 225px;">
+							<a class="footer-txt">关于拜博</a>
+							<a class="footer-txt">企业合作</a>
+							<a class="footer-txt">人才招聘</a>
+						</div>
+					</div>
+					<div class="footer-text">
+						北京拜博尔口腔医院有限公司 版权所有 京ICP备14007210号-1（京）医广[2016]第01-29-0037号
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+
+</html>
