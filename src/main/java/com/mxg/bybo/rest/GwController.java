@@ -174,6 +174,20 @@ public class GwController {
 		return resp;
 	}
 
+	@ApiOperation(value = "获取科室医生", notes = "获取科室医生")
+	@RequestMapping(value = "/getDepartmentDoctors", method = RequestMethod.GET)
+	public List<Doctor> getDepartmentDoctors(@RequestParam long regionId,@RequestParam long departmentId) {
+		List<Doctor> doctors = new ArrayList<Doctor>();
+		if(regionId == 1){
+			doctors = gwService.getAllDoctorByDepartmentId(departmentId);
+		}else{
+			doctors = gwService.getDoctorByDepartmentId(regionId,
+						departmentId);
+		}
+		return doctors;
+	}
+	
+	
 	@ApiOperation(value = "获取科室列表", notes = "获取科室列表")
 	@RequestMapping(value = "/getDepartments", method = RequestMethod.GET)
 	public List<Department> getDepartments(@RequestParam String lang) {
