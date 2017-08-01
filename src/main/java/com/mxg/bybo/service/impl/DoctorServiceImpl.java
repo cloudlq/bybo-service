@@ -1,5 +1,6 @@
 package com.mxg.bybo.service.impl;  
 import com.mxg.bybo.service.DoctorService;
+import com.mxg.bybo.service.ToHtmlService;
 import com.mxg.bybo.dao.DoctorDao;
 import com.mxg.bybo.model.Doctor;
 import com.mxg.common.mybatis.QueryCondition;
@@ -21,17 +22,27 @@ import java.util.List;
 @Service
 public class DoctorServiceImpl  implements DoctorService { 
 	
+	
 	@Autowired
 	private DoctorDao doctorDao;
 	
+	@Autowired
+	private ToHtmlService toHtmlService;
+	
 	public int insertDoctor(Doctor doctor){
+		
+		toHtmlService.toDoctorDetail(doctor);
+		
 		return doctorDao.insertDoctor(doctor);
 	}
 	public int insertDoctorBatch(List<Doctor> list){
 		return doctorDao.insertDoctorBatch(list);
 	}
 	public int updateDoctorById(Doctor doctor){
-		return doctorDao.updateDoctorById(doctor);
+		doctorDao.updateDoctorById(doctor);
+		Doctor d = getDoctorById(doctor.getId());
+		toHtmlService.toDoctorDetail(d);
+		return 1;
 	}
 	public int deleteDoctorById(  Long id  ){
 		return doctorDao.deleteDoctorById(  id  );

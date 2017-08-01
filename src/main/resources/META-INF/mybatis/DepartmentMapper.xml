@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mxg.bybo.dao.DepartmentDao">
-
-		<!-- 用于select查询公用抽取的列 -->
+	<!-- 用于select查询公用抽取的列 -->
 	<sql id="columns">
 	    <![CDATA[
-		id,name,summary,service,technical,picture,language,icon,icon2
+		id,name,summary,service,technical,picture,language,icon,icon2,keywords,description
 	    ]]>
 	</sql>
 
@@ -13,7 +12,7 @@
 	<insert id="insertDepartment">
 	    <![CDATA[
 	        INSERT INTO department ( 
-	        	id,name,summary,service,technical,picture,language,icon,icon2
+	        	id,name,summary,service,technical,picture,language,icon,icon2,keywords,description
 	        ) VALUES (
 	        	#{id} ,
 	        	#{name} ,
@@ -23,7 +22,9 @@
 	        	#{picture} ,
 	        	#{language} ,
 	        	#{icon} ,
-	        	#{icon2} 
+	        	#{icon2} ,
+	        	#{keywords} ,
+	        	#{description} 
 	        )
 	    ]]>
 	</insert>
@@ -32,7 +33,7 @@
 	<insert id="insertDepartmentBatch">
 	    <![CDATA[
 	        INSERT INTO department (
-	        	id,name,summary,service,technical,picture,language,icon,icon2
+	        	id,name,summary,service,technical,picture,language,icon,icon2,keywords,description
 	        ) VALUES 
 	         ]]>
 		<foreach item="item" collection="list" separator=",">
@@ -45,7 +46,9 @@
 						#{item.picture} ,
 						#{item.language} ,
 						#{item.icon} ,
-						#{item.icon2} 
+						#{item.icon2} ,
+						#{item.keywords} ,
+						#{item.description} 
 			)
 		</foreach>
 
@@ -92,6 +95,16 @@
 			<if
 				test="icon2 != null and icon2 != ''">
 				icon2 = #{icon2}
+				,
+			</if>
+			<if
+				test="keywords != null and keywords != ''">
+				keywords = #{keywords}
+				,
+			</if>
+			<if
+				test="description != null and description != ''">
+				description = #{description}
 				
 			</if>
 		</set>
@@ -133,8 +146,17 @@
 				test="department.icon2 != null and department.icon2 != ''">
 				 and icon2 = #{department.icon2}				 
 			</if>
+			<if
+				test="department.keywords != null and department.keywords != ''">
+				 and keywords = #{department.keywords}				 
+			</if>
+			<if
+				test="department.description != null and department.description != ''">
+				 and description = #{department.description}				 
+			</if>
 		</where>
 	</sql>
+
 	<!-- 修改 -->
 	<update id="updateDepartmentById">
 		UPDATE department

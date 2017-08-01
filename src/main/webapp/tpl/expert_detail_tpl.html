@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="keywords" content="##keywords##"/>
+		<meta name="description" content="##description##" />
+		<title>医生详情页</title>
+		<link href="css/base.css" rel="stylesheet" type="text/css" />
+		<link rel="icon" href="images/ico/favicon.ico" type="image/x-icon"/>
+		<script type="text/javascript" src="js/libs/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript" src="js/libs/jquery.ztree.core.min.js"></script>
+		<script type="text/javascript" src="js/common/_impl.js"></script>
+		<script type="text/javascript" src="js/common/fun.js"></script>
+		<script type="text/javascript" src="js/common/json.js"></script>
+		<script type="text/javascript" src="js/common/header.js"></script>
+		<script type="text/javascript" src="js/common/menuFun.js" ></script>	
+	</head>
+
+	<body>
+		<div class="bybo-body">
+						<!--头部-->
+			<div class="bybo-header" id="byboHeader">
+			</div>		
+			<!--主体部分-->
+			<div class="bybo-content">
+				<div class="w12">
+
+					<!--图片-->
+					<div class="zhenliao-banner">
+						<img src="images/search-doctor/search-doctor-banner.jpg" alt="" />
+					</div>
+
+
+					<div class="w10">
+											<!--左边导航-->
+					<div class="nav-box">
+						<ul class="nav-header fl">
+							<li class="header-txt">
+								<a href="index.html">首页></a>
+							</li>
+							<li class="header-txt">
+								<a>IDDC></a>
+							</li>
+							<li class="header-txt">
+								<a>专家介绍</a>
+							</li>
+						</ul>
+					</div>
+						<div class="left-menu">
+							<ul id="leftTree" class="ztree"></ul>
+						</div>
+						<div class="right-detail-c w8 ">
+							<div class="doctor_detail_box">
+								<div class="doctor_person">
+									<div class="doctor_detail_img fl">
+										<img id="doctorPhoto" src="##doctorPhoto##" alt="" />
+									</div>
+									<div class="doctor_info_box fl">
+										<p class="doctor_name" id="name">##name##</p>
+										<p class="doctor-intro" id="honor">##honor##</p>
+										<div class="intro_box">
+											<div class="intro_txt_box">
+												<img src="images/doctor_detail/doctor_detai1.jpg" alt="" class="fl" />
+												<div class="doctor-pro fl" id="">
+													职称：<span id="title">##title##</span>
+												</div>
+											</div>
+											<div class="intro_txt_box">
+												<img src="images/doctor_detail/doctor_detai1.jpg" alt="" class="fl" />
+												<div class="doctor-pro fl" id="">
+													曾任职务：<span id="duty">##duty##</span>
+												</div>
+											</div>
+											<div class="intro_txt_box" style="display: none;">
+												<img src="images/doctor_detail/doctor_detai1.jpg" alt="" class="fl" />
+												<div class="doctor-pro fl">
+													专业：<span id="specialty">##specialty##</span>
+												</div>
+											</div>
+											<div class="intro_txt_box">
+												<img src="images/doctor_detail/doctor_detai1.jpg" alt="" class="fl" />
+												<div class="doctor-pro fl">
+													擅长治疗疾病：<span id="adept">##adept##</span>
+												</div>
+											</div>
+										</div>
+										<!--<div class="pro_txt">
+											<p id="adept"></p>
+										</div>-->
+
+									</div>
+								</div>
+								<div class="doctor-content">
+									专家简介
+								</div>
+								<div class="doctor-content-detail">
+									<div class="detail_txt" id="content">
+									##content##
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<!--底部-->
+			<div class="bybo-footer">
+				<div class="w12">
+					<div class="foot-box">
+						<div class="footer-detail fl">
+							<img src="images/index/bybo-footer.png" alt="" />
+						</div>
+						<div class="footer-hotline fl" style="width: 225px;">
+							<p class="footer-txt">全国服务热线：</p>
+							<p class="bybo-number">400-000-003</p>
+						</div>
+						<div class="footer-info fl" style="width: 225px;">
+							<a class="footer-txt">关于拜博</a>
+							<a class="footer-txt">企业合作</a>
+							<a class="footer-txt">人才招聘</a>
+						</div>
+					</div>
+					<div class="footer-text">
+						北京拜博尔口腔医院有限公司 版权所有 京ICP备14007210号-1（京）医广[2016]第01-29-0037号
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+	</body>
+
+</html>

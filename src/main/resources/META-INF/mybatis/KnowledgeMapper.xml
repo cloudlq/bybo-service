@@ -2,11 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mxg.bybo.dao.KnowledgeDao">
 
-
 	<!-- 用于select查询公用抽取的列 -->
 	<sql id="columns">
 	    <![CDATA[
-		id,title,content,add_time,update_time,author,language,department_id,department_name,category_ids,category_names
+		id,title,content,add_time,update_time,author,language,department_id,department_name,category_ids,category_names,keywords,description
 	    ]]>
 	</sql>
 
@@ -14,7 +13,7 @@
 	<insert id="insertKnowledge">
 	    <![CDATA[
 	        INSERT INTO knowledge ( 
-	        	id,title,content,add_time,update_time,author,language,department_id,department_name,category_ids,category_names
+	        	id,title,content,add_time,update_time,author,language,department_id,department_name,category_ids,category_names,keywords,description
 	        ) VALUES (
 	        	#{id} ,
 	        	#{title} ,
@@ -26,7 +25,9 @@
 	        	#{departmentId} ,
 	        	#{departmentName} ,
 	        	#{categoryIds} ,
-	        	#{categoryNames} 
+	        	#{categoryNames} ,
+	        	#{keywords} ,
+	        	#{description} 
 	        )
 	    ]]>
 	</insert>
@@ -35,7 +36,7 @@
 	<insert id="insertKnowledgeBatch">
 	    <![CDATA[
 	        INSERT INTO knowledge (
-	        	id,title,content,add_time,update_time,author,language,department_id,department_name,category_ids,category_names
+	        	id,title,content,add_time,update_time,author,language,department_id,department_name,category_ids,category_names,keywords,description
 	        ) VALUES 
 	         ]]>
 		<foreach item="item" collection="list" separator=",">
@@ -50,7 +51,9 @@
 						#{item.departmentId} ,
 						#{item.departmentName} ,
 						#{item.categoryIds} ,
-						#{item.categoryNames} 
+						#{item.categoryNames} ,
+						#{item.keywords} ,
+						#{item.description} 
 			)
 		</foreach>
 
@@ -101,6 +104,16 @@
 			<if
 				test="categoryNames != null and categoryNames != ''">
 				category_names = #{categoryNames}
+				,
+			</if>
+			<if
+				test="keywords != null and keywords != ''">
+				keywords = #{keywords}
+				,
+			</if>
+			<if
+				test="description != null and description != ''">
+				description = #{description}
 				
 			</if>
 		</set>
@@ -147,8 +160,17 @@
 				test="knowledge.categoryNames != null and knowledge.categoryNames != ''">
 				 and category_names = #{knowledge.categoryNames}				 
 			</if>
+			<if
+				test="knowledge.keywords != null and knowledge.keywords != ''">
+				 and keywords = #{knowledge.keywords}				 
+			</if>
+			<if
+				test="knowledge.description != null and knowledge.description != ''">
+				 and description = #{knowledge.description}				 
+			</if>
 		</where>
 	</sql>
+
 	
 	<!-- 修改 -->
 	<update id="updateKnowledgeById">

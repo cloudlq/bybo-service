@@ -3,11 +3,10 @@
 <mapper namespace="com.mxg.bybo.dao.ExpertDao">
 
 
-
 	<!-- 用于select查询公用抽取的列 -->
 	<sql id="columns">
 	    <![CDATA[
-		id,name,specialty,title,region_id,language,photo,honor,adept,content,department,gray_phone,duty
+		id,name,specialty,title,region_id,language,photo,honor,adept,content,department,gray_phone,duty,keywords,description
 	    ]]>
 	</sql>
 
@@ -15,7 +14,7 @@
 	<insert id="insertExpert">
 	    <![CDATA[
 	        INSERT INTO expert ( 
-	        	id,name,specialty,title,region_id,language,photo,honor,adept,content,department,gray_phone,duty
+	        	id,name,specialty,title,region_id,language,photo,honor,adept,content,department,gray_phone,duty,keywords,description
 	        ) VALUES (
 	        	#{id} ,
 	        	#{name} ,
@@ -29,7 +28,9 @@
 	        	#{content} ,
 	        	#{department} ,
 	        	#{grayPhone} ,
-	        	#{duty} 
+	        	#{duty} ,
+	        	#{keywords} ,
+	        	#{description} 
 	        )
 	    ]]>
 	</insert>
@@ -38,7 +39,7 @@
 	<insert id="insertExpertBatch">
 	    <![CDATA[
 	        INSERT INTO expert (
-	        	id,name,specialty,title,region_id,language,photo,honor,adept,content,department,gray_phone,duty
+	        	id,name,specialty,title,region_id,language,photo,honor,adept,content,department,gray_phone,duty,keywords,description
 	        ) VALUES 
 	         ]]>
 		<foreach item="item" collection="list" separator=",">
@@ -55,7 +56,9 @@
 						#{item.content} ,
 						#{item.department} ,
 						#{item.grayPhone} ,
-						#{item.duty} 
+						#{item.duty} ,
+						#{item.keywords} ,
+						#{item.description} 
 			)
 		</foreach>
 
@@ -69,10 +72,8 @@
 				name = #{name}
 				,
 			</if>
-			<if
-				test="specialty != null and specialty != ''">
-				specialty = #{specialty}
-				,
+			<if test="specialty != null">
+				specialty = #{specialty} ,
 			</if>
 			<if
 				test="title != null and title != ''">
@@ -120,6 +121,16 @@
 			<if
 				test="duty != null and duty != ''">
 				duty = #{duty}
+				,
+			</if>
+			<if
+				test="keywords != null and keywords != ''">
+				keywords = #{keywords}
+				,
+			</if>
+			<if
+				test="description != null and description != ''">
+				description = #{description}
 				
 			</if>
 		</set>
@@ -133,9 +144,8 @@
 				test="expert.name != null and expert.name != ''">
 				name = #{expert.name}				 
 			</if>
-			<if
-				test="expert.specialty != null and expert.specialty != ''">
-				 and specialty = #{expert.specialty}				 
+			<if test="expert.specialty != null">
+				 and  specialty = #{expert.specialty} 
 			</if>
 			<if
 				test="expert.title != null and expert.title != ''">
@@ -176,8 +186,17 @@
 				test="expert.duty != null and expert.duty != ''">
 				 and duty = #{expert.duty}				 
 			</if>
+			<if
+				test="expert.keywords != null and expert.keywords != ''">
+				 and keywords = #{expert.keywords}				 
+			</if>
+			<if
+				test="expert.description != null and expert.description != ''">
+				 and description = #{expert.description}				 
+			</if>
 		</where>
 	</sql>
+
 
 	<!-- 修改 -->
 	<update id="updateExpertById">

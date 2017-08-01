@@ -89,7 +89,48 @@ public class Expert implements Serializable {
 	 */
 	private java.lang.String grayPhone;
 
+	/**
+     * 关键字     
+     */	
+	private java.lang.String keywords;
 	
+	/**
+     * 描述     
+     */	
+	private java.lang.String description;
+	
+	
+	/**
+	 * @param keywords 关键字
+	 */
+	@ApiModelProperty("关键字")
+	public void setKeywords(java.lang.String keywords) {
+		this.keywords = keywords;
+	}
+	
+	/**
+	 * @return 关键字
+	 */
+	@ApiModelProperty("关键字")
+	public java.lang.String getKeywords() {
+		return this.keywords;
+	}
+	
+	/**
+	 * @param describe 描述
+	 */
+	@ApiModelProperty("描述")
+	public void setDescription(java.lang.String description) {
+		this.description = description;
+	}
+	
+	/**
+	 * @return 描述
+	 */
+	@ApiModelProperty("描述")
+	public java.lang.String getDescription() {
+		return this.description;
+	}
 	
 	public java.lang.String getDuty() {
 		return duty;

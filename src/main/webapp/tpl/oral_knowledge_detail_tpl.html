@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="keywords" content="##keywords##"/>
+		<meta name="description" content="##description##" />
+		<title>口腔知识库</title>
+		<link href="css/base.css" rel="stylesheet" type="text/css" />
+		<link rel="icon" href="images/ico/favicon.ico" type="image/x-icon"/>
+		<script type="text/javascript" src="js/libs/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript" src="js/libs/jquery.ztree.core.min.js"></script>
+		<script type="text/javascript" src="js/common/_impl.js"></script>
+		<script type="text/javascript" src="js/common/fun.js"></script>
+		<script type="text/javascript" src="js/common/json.js"></script>
+		<script type="text/javascript" src="js/common/header.js"></script>
+		<script type="text/javascript" src="js/app/knowledgeDetail.js" ></script>
+	</head>
+
+	<body>
+		<div class="bybo-body">
+						<!--头部-->
+			<div class="bybo-header" id="byboHeader">
+			</div>	
+				
+			<!--主体部分-->
+			<div class="bybo-content">
+				<div class="w12">
+
+					<!--图片-->
+					<div class="zhenliao-banner">
+						<img src="images/oral_knowledge1/oral_knowledge1-banner.jpg" alt="" />
+					</div>
+					<div class="oral-box">
+						<!--搜索-->
+						<div class="oral-search">
+							<input type="text" placeholder="请输入搜索内容" class="oral-search-input fl" id="keyName"/>
+							<button class="oral-search-btn fl" id="searchBtn">搜索</button>
+						</div>
+						<!--内容-->
+                       <div class="oral-knowledge">
+                       	<!--左边-->
+                       	<div class="oral-knowledge-left fl" id="departmentList">
+                       		<div class="knowledge-left-header2 pt50">
+                       			<!--<img src="images/oral_knowledge1/oral_knowledge2-1.png" alt=""class="left-header-img fl" id="departmentImage" />-->
+                       			<p class="left-header-txt fl" id="knowledgeTitle">
+                       				##title##
+                       			</p>
+                       		</div>
+                       		<div class="left-header-detail" style="border: none;">
+                       			<!--<p class="detail-up-txt" id="knowledgeTitle"></p>-->
+                       			<div class="detail-down-txt fu-text-content" id="knowledgeContent">
+                       			##content##
+                       			</div>
+                       		</div>
+                       	</div>
+                       	<!--右边-->
+                       	<div class="oral-knowledge-right fr">
+                       		<div class="knowledge-right-box">
+                       			<div class="knowledge-right-header" id="parentList" >
+                       			##parentList##
+                       				<!--<p class="father">父级</p>
+                       				<p class="father-content">口腔种植</p>-->
+                       			</div>
+                       			<div class="knowledge-right-header" id="childList">
+                       			##childList##
+                       				<!--<p class="father">子级</p>
+                       				<p class="father-content">口腔种植</p>-->
+                       			</div>
+                       		</div>
+                       	</div>
+                       </div>
+                       <div class="knowledge-footer-box" style="display: ##showsilimar##">
+                             <div class="footer-box">
+                             	<div class="footer-box-title">
+                             		<img src="images/oral_knowledge1/related-icon2.png">
+                             		<span>相关推荐</span>
+                             	</div>
+                             	<div class="footer-box-content">
+                             		<div class="footer-content" id="silimarList">
+                             		##silimarList##
+                             			<!--<p class="footer-left-txt fl">种牙好还是镶牙好?</p>
+                             			<p class="footer-left-txt fl">种牙好还是镶牙好?</p>
+                             			<p class="footer-left-txt fl">种牙好还是镶牙好?</p>
+                             			<p class="footer-left-txt fl">种牙好还是镶牙好?</p>-->
+                             		</div>
+                             	</div>
+                             </div>
+                       </div>
+					</div>
+				</div>
+			</div>
+			<!--底部-->
+			<div class="bybo-footer">
+				<div class="w12">
+					<div class="foot-box">
+						<div class="footer-detail fl">
+							<img src="images/index/bybo-footer.png" alt="" />
+						</div>
+						<div class="footer-hotline fl" style="width: 225px;">
+							<p class="footer-txt">全国服务热线：</p>
+							<p class="bybo-number">400-000-003</p>
+						</div>
+						<div class="footer-info fl" style="width: 225px;">
+							<a class="footer-txt">关于拜博</a>
+							<a class="footer-txt">企业合作</a>
+							<a class="footer-txt">人才招聘</a>
+						</div>
+					</div>
+					<div class="footer-text">
+						北京拜博尔口腔医院有限公司 版权所有 京ICP备14007210号-1（京）医广[2016]第01-29-0037号
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			$(".menu-title").hover(function() {
+				$(".menu-child").hide();
+				$(this).next().show();
+			});
+
+			$(".menu-child").mouseleave(function() {
+				$(".menu-child").hide();
+			});
+		</script>
+
+	</body>
+
+</html>

@@ -60,6 +60,7 @@ import com.mxg.bybo.model.Rollpic;
 import com.mxg.bybo.model.SimilarKnowledge;
 import com.mxg.bybo.model.Store;
 import com.mxg.bybo.model.req.SimilarKnowledgeReq;
+import com.mxg.bybo.model.vo.KnowledgeVo;
 import com.mxg.bybo.service.ArticleService;
 import com.mxg.bybo.service.CategoryService;
 import com.mxg.bybo.service.ClassifyService;
@@ -69,6 +70,7 @@ import com.mxg.bybo.service.DoctorService;
 import com.mxg.bybo.service.ExpertClassifyRelService;
 import com.mxg.bybo.service.ExpertService;
 import com.mxg.bybo.service.GreenChanneService;
+import com.mxg.bybo.service.GwService;
 import com.mxg.bybo.service.KnowledgeCategoryService;
 import com.mxg.bybo.service.KnowledgeService;
 import com.mxg.bybo.service.RegionDepartmentService;
@@ -76,6 +78,7 @@ import com.mxg.bybo.service.RegionService;
 import com.mxg.bybo.service.RollpicService;
 import com.mxg.bybo.service.SimilarKnowledgeService;
 import com.mxg.bybo.service.StoreService;
+import com.mxg.bybo.service.ToHtmlService;
 import com.mxg.common.mybatis.QueryCondition;
 import com.mxg.common.utils.GeneralUtils;
 
@@ -147,7 +150,12 @@ public class AdminController {
 	@Autowired
 	private  RegionDepartmentService regionDepartmentService;
 	
-
+	@Autowired
+	private ToHtmlService toHtmlService;
+	
+	@Autowired
+	private GwService gwService;
+	
 	@ApiOperation(value = "上传文件", notes = "上传文件")
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public String addLog(@RequestParam("fileUpload") CommonsMultipartFile file,
@@ -1154,6 +1162,9 @@ public class AdminController {
 			sk.setSimilarId(similarId);
 			similarKnowledgeService.insertSimilarKnowledge(sk);
 		}
+		
+		KnowledgeVo kv = gwService.getKnowledgeVoById(knowledge.getId());
+		toHtmlService.toKnowledgeDetail(kv);
 
 		return 1;
 	}
@@ -1177,6 +1188,10 @@ public class AdminController {
 			sk.setSimilarId(similarId);
 			similarKnowledgeService.insertSimilarKnowledge(sk);
 		}
+		
+		KnowledgeVo kv = gwService.getKnowledgeVoById(knowledge.getId());
+		toHtmlService.toKnowledgeDetail(kv);
+		
 		return 1;
 	}
 

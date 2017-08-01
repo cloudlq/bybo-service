@@ -10,12 +10,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mxg.bybo.model.Article;
 import com.mxg.bybo.model.Department;
+import com.mxg.bybo.model.Doctor;
+import com.mxg.bybo.model.Expert;
 import com.mxg.bybo.model.req.MembershipReq;
 import com.mxg.bybo.model.resp.BonustransResp;
 import com.mxg.bybo.model.resp.MembershipResp;
 import com.mxg.bybo.model.resp.TransactionsResp;
+import com.mxg.bybo.service.ArticleService;
 import com.mxg.bybo.service.DepartmentService;
+import com.mxg.bybo.service.DoctorService;
+import com.mxg.bybo.service.ExpertService;
 import com.mxg.bybo.service.HttpService;
 import com.mxg.bybo.service.ToHtmlService;
 
@@ -39,6 +45,15 @@ public class TestController {
 	
 	@Autowired
 	private ToHtmlService toHtmlService;
+	
+	@Autowired
+	private DoctorService doctorService;
+	
+	@Autowired
+	private ExpertService expertService;
+	
+	@Autowired
+	private ArticleService articleService;
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	@ResponseBody
@@ -65,9 +80,9 @@ public class TestController {
 	}
 
 	
-	@RequestMapping(value = "/toHtml", method = RequestMethod.GET)
+	@RequestMapping(value = "/toSubjectHtml", method = RequestMethod.GET)
 	@ResponseBody
-	int toHtml(@RequestParam Long id) {
+	int toSubjectHtml(@RequestParam Long id) {
 		Department d = departmentService.getDepartmentById(id);
 		toHtmlService.toSubjectDetail(d);
 		return 1;
@@ -79,4 +94,66 @@ public class TestController {
 		toHtmlService.toSubjectDetailAll();
 		return 1;
 	}
+	
+
+	@RequestMapping(value = "/toDoctorHtml", method = RequestMethod.GET)
+	@ResponseBody
+	int toDoctorHtml(@RequestParam Long id) {
+		Doctor d = doctorService.getDoctorById(id);
+		toHtmlService.toDoctorDetail(d);
+		return 1;
+	}
+	
+	@RequestMapping(value = "/toDoctorHtmlAll", method = RequestMethod.GET)
+	@ResponseBody
+	int toDoctorHtmlAll() {
+		toHtmlService.toDoctorDetailAll();
+		return 1;
+	}
+	
+	@RequestMapping(value = "/toExpertHtml", method = RequestMethod.GET)
+	@ResponseBody
+	int toExpertHtml(@RequestParam Long id) {
+		Expert d = expertService.getExpertById(id);
+		toHtmlService.toExpertDetail(d);
+		return 1;
+	}
+	
+	@RequestMapping(value = "/toExpertHtmlAll", method = RequestMethod.GET)
+	@ResponseBody
+	int toExpertHtmlAll() {
+		toHtmlService.toExpertDetailAll();
+		return 1;
+	}
+	
+	@RequestMapping(value = "/toTopicExchangeDetail", method = RequestMethod.GET)
+	@ResponseBody
+	int toTopicExchangeDetail(@RequestParam Long id) {
+		Article d = articleService.getArticleById(id);
+		toHtmlService.toTopicExchangeDetail(d);
+		return 1;
+	}
+	
+	@RequestMapping(value = "/toTopicExchangeDetailAll", method = RequestMethod.GET)
+	@ResponseBody
+	int toTopicExchangeDetailAll() {
+		toHtmlService.toTopicExchangeDetailAll();
+		return 1;
+	}
+	
+	@RequestMapping(value = "/toAll", method = RequestMethod.GET)
+	@ResponseBody
+	int toAll() {
+		toHtmlService.toTopicExchangeDetailAll();
+		toHtmlService.toAcademicExchangeDetailAll();
+		toHtmlService.toCooperationDetailAll();
+		toHtmlService.toExpertDetailAll();
+		toHtmlService.toDoctorDetailAll();
+		toHtmlService.toMemberCommunityDetailDetaiAll();
+		toHtmlService.toSocialResponsibilityDetaiAll();
+		toHtmlService.toKnowledgeDetailAll();
+		return 1;
+	}
+	
+	
 }

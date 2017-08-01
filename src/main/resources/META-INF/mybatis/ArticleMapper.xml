@@ -3,10 +3,10 @@
 <mapper namespace="com.mxg.bybo.dao.ArticleDao">
 
 
-<!-- 用于select查询公用抽取的列 -->
+	<!-- 用于select查询公用抽取的列 -->
 	<sql id="columns">
 	    <![CDATA[
-		id,title,content,add_time,update_time,category_id,category_name,region_id,image_url,language,author,summary,image_url2,department
+		id,title,content,add_time,update_time,category_id,category_name,region_id,image_url,language,author,summary,image_url2,department,keywords,description
 	    ]]>
 	</sql>
 
@@ -14,7 +14,7 @@
 	<insert id="insertArticle">
 	    <![CDATA[
 	        INSERT INTO article ( 
-	        	id,title,content,add_time,update_time,category_id,category_name,region_id,image_url,language,author,summary,image_url2,department
+	        	id,title,content,add_time,update_time,category_id,category_name,region_id,image_url,language,author,summary,image_url2,department,keywords,description
 	        ) VALUES (
 	        	#{id} ,
 	        	#{title} ,
@@ -29,7 +29,9 @@
 	        	#{author} ,
 	        	#{summary} ,
 	        	#{imageUrl2} ,
-	        	#{department} 
+	        	#{department} ,
+	        	#{keywords} ,
+	        	#{description} 
 	        )
 	    ]]>
 	</insert>
@@ -38,7 +40,7 @@
 	<insert id="insertArticleBatch">
 	    <![CDATA[
 	        INSERT INTO article (
-	        	id,title,content,add_time,update_time,category_id,category_name,region_id,image_url,language,author,summary,image_url2,department
+	        	id,title,content,add_time,update_time,category_id,category_name,region_id,image_url,language,author,summary,image_url2,department,keywords,description
 	        ) VALUES 
 	         ]]>
 		<foreach item="item" collection="list" separator=",">
@@ -56,7 +58,9 @@
 						#{item.author} ,
 						#{item.summary} ,
 						#{item.imageUrl2} ,
-						#{item.department} 
+						#{item.department} ,
+						#{item.keywords} ,
+						#{item.description} 
 			)
 		</foreach>
 
@@ -122,6 +126,16 @@
 			<if
 				test="department != null and department != ''">
 				department = #{department}
+				,
+			</if>
+			<if
+				test="keywords != null and keywords != ''">
+				keywords = #{keywords}
+				,
+			</if>
+			<if
+				test="description != null and description != ''">
+				description = #{description}
 				
 			</if>
 		</set>
@@ -179,6 +193,14 @@
 			<if
 				test="article.department != null and article.department != ''">
 				 and department = #{article.department}				 
+			</if>
+			<if
+				test="article.keywords != null and article.keywords != ''">
+				 and keywords = #{article.keywords}				 
+			</if>
+			<if
+				test="article.description != null and article.description != ''">
+				 and description = #{article.description}				 
 			</if>
 		</where>
 	</sql>

@@ -1,5 +1,6 @@
 package com.mxg.bybo.service.impl;  
 import com.mxg.bybo.service.ArticleService;
+import com.mxg.bybo.service.ToHtmlService;
 import com.mxg.bybo.dao.ArticleDao;
 import com.mxg.bybo.model.Article;
 import com.mxg.common.mybatis.QueryCondition;
@@ -23,15 +24,46 @@ public class ArticleServiceImpl  implements ArticleService {
 	
 	@Autowired
 	private ArticleDao articleDao;
+	@Autowired
+	private ToHtmlService toHtmlService;
 	
 	public int insertArticle(Article article){
+		String type = article.getCategoryId();
+		if(type.equals("06")){
+			toHtmlService.toTopicExchangeDetail(article);
+		}else if(type.equals("02")){
+			toHtmlService.toCooperationDetail(article);
+		}else if(type.equals("03")){
+			toHtmlService.toAcademicExchangeDetail(article);
+		}else if(type.equals("04")){
+			toHtmlService.toSocialResponsibilityDetai(article);
+		}else if(type.equals("05")){
+			toHtmlService.toMemberCommunityDetailDetai(article);
+		}
 		return articleDao.insertArticle(article);
 	}
 	public int insertArticleBatch(List<Article> list){
 		return articleDao.insertArticleBatch(list);
 	}
 	public int updateArticleById(Article article){
-		return articleDao.updateArticleById(article);
+		
+		
+		
+		articleDao.updateArticleById(article);
+		Article article2 = getArticleById(article.getId());
+		String type = article.getCategoryId();
+		if(type.equals("06")){
+			toHtmlService.toTopicExchangeDetail(article2);
+		}else if(type.equals("02")){
+			toHtmlService.toCooperationDetail(article2);
+		}else if(type.equals("03")){
+			toHtmlService.toAcademicExchangeDetail(article2);
+		}else if(type.equals("04")){
+			toHtmlService.toSocialResponsibilityDetai(article2);
+		}else if(type.equals("05")){
+			toHtmlService.toMemberCommunityDetailDetai(article2);
+		}
+		return 1;
 	}
 	public int deleteArticleById(  Long id  ){
 		return articleDao.deleteArticleById(  id  );

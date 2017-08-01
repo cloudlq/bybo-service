@@ -1,7 +1,9 @@
 package com.mxg.bybo.service.impl;  
 import com.mxg.bybo.service.KnowledgeService;
+import com.mxg.bybo.service.ToHtmlService;
 import com.mxg.bybo.dao.KnowledgeDao;
 import com.mxg.bybo.model.Knowledge;
+import com.mxg.bybo.model.vo.KnowledgeVo;
 import com.mxg.common.mybatis.QueryCondition;
 
 import org.springframework.data.domain.Page;
@@ -22,6 +24,9 @@ public class KnowledgeServiceImpl  implements KnowledgeService {
 	
 	@Autowired
 	private KnowledgeDao knowledgeDao;
+	
+	@Autowired
+	private ToHtmlService toHtmlService;
 	
 	public int insertKnowledge(Knowledge knowledge){
 		return knowledgeDao.insertKnowledge(knowledge);
