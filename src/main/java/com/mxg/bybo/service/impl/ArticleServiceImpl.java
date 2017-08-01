@@ -39,6 +39,10 @@ public class ArticleServiceImpl  implements ArticleService {
 			toHtmlService.toSocialResponsibilityDetai(article);
 		}else if(type.equals("05")){
 			toHtmlService.toMemberCommunityDetailDetai(article);
+		}else if(type.equals("00")){
+			toHtmlService.toTreatmentProjectDetail(article);
+		}else if(type.equals("01")){
+			toHtmlService.toCaseCenterDetail(article);
 		}
 		return articleDao.insertArticle(article);
 	}
@@ -62,6 +66,10 @@ public class ArticleServiceImpl  implements ArticleService {
 			toHtmlService.toSocialResponsibilityDetai(article2);
 		}else if(type.equals("05")){
 			toHtmlService.toMemberCommunityDetailDetai(article2);
+		}else if(type.equals("00")){
+			toHtmlService.toTreatmentProjectDetail(article2);
+		}else if(type.equals("01")){
+			toHtmlService.toCaseCenterDetail(article2);
 		}
 		return 1;
 	}

@@ -25,4 +25,8 @@ public interface ToHtmlService {
 	void toMemberCommunityDetailDetaiAll();
 	void toKnowledgeDetail(KnowledgeVo kv);
 	void toKnowledgeDetailAll();
+	void toTreatmentProjectDetail(Article article);
+	void toTreatmentProjectDetailAll();
+	void toCaseCenterDetail(Article article);
+	void toCaseCenterDetailAll();
 }

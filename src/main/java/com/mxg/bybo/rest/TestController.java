@@ -152,8 +152,16 @@ public class TestController {
 		toHtmlService.toMemberCommunityDetailDetaiAll();
 		toHtmlService.toSocialResponsibilityDetaiAll();
 		toHtmlService.toKnowledgeDetailAll();
+		toHtmlService.toSubjectDetailAll();
+		toHtmlService.toTreatmentProjectDetailAll();
+		toHtmlService.toCaseCenterDetailAll();
 		return 1;
 	}
-	
+	@RequestMapping(value = "/toCaseCenter", method = RequestMethod.GET)
+	@ResponseBody
+	int toCaseCenter() {
+		toHtmlService.toCaseCenterDetailAll();
+		return 1;
+	}
 	
 }

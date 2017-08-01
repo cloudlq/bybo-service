@@ -197,8 +197,6 @@ public class ToHtmlServiceImpl implements ToHtmlService {
 		if (newV == null || newV.isEmpty()) {
 			newV = "-";
 		}
-		System.out.println(Charset.defaultCharset());
-		System.out.println(System.getProperty("file.encoding"));
 		content = content.replaceAll(oldV, newV);
 
 		return content;
@@ -457,5 +455,38 @@ public class ToHtmlServiceImpl implements ToHtmlService {
 	public static void main(String[] args) {
 		System.out.println(Charset.defaultCharset());
 		System.out.println(System.getProperty("file.encoding"));
+	}
+
+	@Override
+	public void toTreatmentProjectDetail(Article article) {
+		toArticelDetail(article, "treatment_project_detail");
+		
+	}
+
+	@Override
+	public void toTreatmentProjectDetailAll() {
+		Article fArticle = new Article();
+		fArticle.setCategoryId("00");// 诊疗项目
+		List<Article> as = articleDao.getArticles(fArticle);
+		for (Article d : as) {
+			toTreatmentProjectDetail(d);
+		}
+	}
+
+	@Override
+	public void toCaseCenterDetail(Article article) {
+		toArticelDetail(article, "case_center_detail");
+		
+	}
+
+	@Override
+	public void toCaseCenterDetailAll() {
+		Article fArticle = new Article();
+		fArticle.setCategoryId("01");// 案例中心
+		List<Article> as = articleDao.getArticles(fArticle);
+		for (Article d : as) {
+			toCaseCenterDetail(d);
+		}
+		
 	}
 }
